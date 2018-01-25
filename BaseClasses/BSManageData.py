@@ -2,7 +2,7 @@
 Class to find data from directory structures within mjdsim/ and elsewhere on PDSF
 """
 
-class BSFindData():
+class BSManageData():
         """
         Class to find data from directory structures within mjdsim/ and elsewhere on PDSF
         Methods to retrieve that data and return it as a useable object to be saved or combined.

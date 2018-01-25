@@ -6,8 +6,8 @@ Types: ['detector', 'hardwareComponent', 'decayChain', 'decayChainSegment']
 import BaseClasses.BSConfigData as BSConfigData
 bscd = BSConfigData.BSConfigData()
 
-import BaseClasses.BSFindData as BSFindData
-bsfd = BSFindData.BSFindData()
+import BaseClasses.BSManageData as BSManageData
+bsmd = BSManageData.BSManageData()
 
 class BSLoop():
     """
@@ -68,7 +68,7 @@ class BSLoop():
                 print('detector', self.currentDetector)
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsfd.GetFullPath(self.GetCurrentVarsDict()) # This syntax could be simplified with a BSCurrent.py class to hold the current var vals. bsfd would have access to BSCurrentVars
+                bsmd.GetFullPath(self.GetCurrentVarsDict()) # This syntax could be simplified with a BSCurrent.py class to hold the current var vals. bsmd would have access to BSCurrentVars
             self.currentDetector = None # This syntax could be simplified to BSCurrentVars.ResetVar(objType)
 
         if(objType == 'decayChain'):
@@ -77,7 +77,7 @@ class BSLoop():
                 print('decayChain', self.currentDecayChain) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsfd.GetFullPath(self.GetCurrentVarsDict())
+                bsmd.GetFullPath(self.GetCurrentVarsDict())
             self.currentDecayChain = None
 
         if(objType == 'segment'):
@@ -91,7 +91,7 @@ class BSLoop():
                             self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
                             None#print('...end of line, finding bottom-level sim files')
-                        bsfd.GetFullPath(self.GetCurrentVarsDict())
+                        bsmd.GetFullPath(self.GetCurrentVarsDict())
                     self.currentSegment = None
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[self.currentDecayChain]:
@@ -102,7 +102,7 @@ class BSLoop():
                         self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                     if not recur:
                         None#print('...end of line, finding bottom-level sim files')
-                    bsfd.GetFullPath(self.GetCurrentVarsDict())
+                    bsmd.GetFullPath(self.GetCurrentVarsDict())
                 self.currentSegment = None
                 self.currentBranchingRatio = None
 
@@ -112,7 +112,7 @@ class BSLoop():
                 print('hardwareComponent', self.currentHardwareComponent)
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsfd.GetFullPath(self.GetCurrentVarsDict())
+                bsmd.GetFullPath(self.GetCurrentVarsDict())
             self.currentHardwareComponent = None
 
     # def TestPassDict(self, objType = None, **recur):
