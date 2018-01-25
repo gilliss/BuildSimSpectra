@@ -6,6 +6,7 @@ class ConfigData():
     def __init__(self):
         return None
 
+    configurationList = ['DS0', 'DS1', 'DS2']
     detectorList = ['D1', 'D2', 'D3', 'D4', 'D5']
     decayChainList = ['U', 'Th', 'K', 'Co', '2v']
     decayChainSegmentBranchingRatioDict = {
@@ -31,6 +32,7 @@ class ConfigData():
                                 }
                             }
     hardwareComponentList = ['H1', 'H2']
+    hardwareGroupList = ['CuParts', 'Near', 'Far']
 
 if __name__ == '__main__':
     ConfigData()
