@@ -6,49 +6,27 @@ Types: ['detector', 'hardwareComponent', 'decayChain', 'decayChainSegment']
 import BaseClasses.BSConfigData as BSConfigData
 bscd = BSConfigData.BSConfigData()
 
+import BaseClasses.BSCurrentVars as BSCurrentVars
+bscv = BSCurrentVars.BSCurrentVars()
+
 import BaseClasses.BSManageData as BSManageData
-bsmd = BSManageData.BSManageData()
+bsmd = BSManageData.BSManageData(bscv) # bsmd needs the bscv object passed into it
 
 class BSLoop():
     """
     Functions to handle nested loops over different types. Loops could be nested in any order.
-    Types: ['detector', 'hardwareComponent', 'decayChain', 'decayChainSegment']
+    Types: ['detector', 'hardwareComponent', 'decayChain', 'decayChainSegment', 'hardwareGroup', 'configuration', 'cut']
     """
     def __init__(self):
-        # Useful singletons for loops to know what layer they're on
-        self.currentConfiguration = None
-        self.currentDetector = None
-        self.currentDecayChain = None
-        self.currentSegment = None
-        self.currentBranchingRatio = None
-        self.currentHardwareComponent = None
-        self.currentHardwareGroup = None
+        print('Remember to set configuration and cut, and use desired recursion/looping routine with desired weightFuncs set')
         return None
-
-    def ResetCurrentVars(self, objType):
-        self.currentConfiguration = None
-        self.currentDetector = None
-        self.currentDecayChain = None
-        self.currentSegment = None
-        self.currentBranchingRatio = None
-        self.currentHardwareComponent = None
-        self.currentHardwareGroup = None
-        return None
-
-    def GetCurrentVarsDict(self):
-        #return [self.currentConfiguration, self.currentDetector, self.currentDecayChain, self.currentSegment, self.currentBranchingRatio, self.currentHardwareComponent, self.currentHardwareGroup]
-        return {
-                'configuration': self.currentConfiguration,
-                'detector': self.currentDetector,
-                'decayChain': self.currentDecayChain,
-                'segment': self.currentSegment,
-                'branchingRatio': self.currentBranchingRatio,
-                'hardwareComponent': self.currentHardwareComponent,
-                'hardwareGroup': self.currentHardwareGroup
-                }
 
     def ReturnHello(self):
         return 'Hello'
+
+    def SetCurrentVars(self, **currentVars):
+        bscv.SetCurrentVar('configuration', currentVars['configuration'])
+        bscv.SetCurrentVar('cut', currentVars['cut'])
 
     def For(self, objType = None, weightFunc = None, **recur):
         """
@@ -64,56 +42,56 @@ class BSLoop():
 
         if(objType == 'detector'):
             for obj in bscd.GetDetectorList():
-                self.currentDetector = obj
-                print('detector', self.currentDetector)
+                bscv.SetCurrentVar(objType, obj)
+                print(objType, bscv.GetCurrentVar(objType))
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsmd.GetFile(self.GetCurrentVarsDict()) # This syntax could be simplified with a BSCurrent.py class to hold the current var vals. bsmd would have access to BSCurrentVars
-            self.currentDetector = None # This syntax could be simplified to BSCurrentVars.ResetVar(objType)
+                bsmd.GetFile() # This syntax could be simplified with a BSCurrent.py class to hold the current var vals. bsmd would have access to BSCurrentVars
+            bscv.ResetCurrentVar(objType) # This syntax could be simplified to BSCurrentVars.ResetVar(objType)
 
         if(objType == 'decayChain'):
             for obj in bscd.GetDecayChainList():
-                self.currentDecayChain = obj
-                print('decayChain', self.currentDecayChain) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
+                bscv.SetCurrentVar(objType, obj)
+                print(objType, bscv.GetCurrentVar(objType)) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsmd.GetFile(self.GetCurrentVarsDict())
-            self.currentDecayChain = None
+                bsmd.GetFile()
+            bscv.ResetCurrentVar(objType)
 
         if(objType == 'segment'):
-            if(self.currentDecayChain == None): # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
+            if bscv.GetCurrentVar(objType) == None: # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
                 for decayChain in bscd.GetDecayChainSegmentBranchingRatioDict():
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
-                        self.currentSegment = obj
-                        self.currentBranchingRatio = bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj]
-                        print('segment', decayChain, self.currentBranchingRatio)
+                        bscv.SetCurrentVar(objType, obj)
+                        bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
+                        print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
                         if recur:
                             self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
                             None#print('...end of line, finding bottom-level sim files')
-                        bsmd.GetFile(self.GetCurrentVarsDict())
-                    self.currentSegment = None
+                        bsmd.GetFile()
+                    bscv.ResetCurrentVar(objType)
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
-                for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[self.currentDecayChain]:
-                    self.currentSegment = obj
-                    self.currentBranchingRatio = bscd.GetDecayChainSegmentBranchingRatioDict()[self.currentDecayChain][obj]
-                    print('segment', self.currentDecayChain, self.currentBranchingRatio)
+                for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
+                    bscv.SetCurrentVar(objType, obj)
+                    bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
+                    print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('branchingRatio'))
                     if recur:
                         self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                     if not recur:
                         None#print('...end of line, finding bottom-level sim files')
-                    bsmd.GetFile(self.GetCurrentVarsDict())
-                self.currentSegment = None
-                self.currentBranchingRatio = None
+                    bsmd.GetFile()
+                bscv.ResetCurrentVar(objType)
+                bscv.ResetCurrentVar('branchingRatio')
 
         if(objType == 'hardwareComponent'):
             for obj in bscd.GetHardwareComponentList():
-                self.currentHardwareComponent = obj
-                print('hardwareComponent', self.currentHardwareComponent)
+                bscv.SetCurrentVar(objType, obj)
+                print(objType, bscv.GetCurrentVar(objType))
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsmd.GetFile(self.GetCurrentVarsDict())
-            self.currentHardwareComponent = None
+                bsmd.GetFile()
+            bscv.ResetCurrentVar(objType)
 
     # def TestPassDict(self, objType = None, **recur):
     #     if recur:
