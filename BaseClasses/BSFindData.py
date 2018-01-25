@@ -3,6 +3,10 @@ Class to find data from directory structures within mjdsim/ and elsewhere on PDS
 """
 
 class BSFindData():
+        """
+        Class to find data from directory structures within mjdsim/ and elsewhere on PDSF
+        Methods to retrieve that data and return it as a useable object to be saved or combined.
+        """
         def __init__(self):
             self.configuration = None
             self.detector = None
@@ -14,6 +18,9 @@ class BSFindData():
             return None
 
         def GetFullPath(self, currentVarsDict):
+            """
+
+            """
             configuration, detector, decayChain, segment, branchingRatio, hardwareComponent, hardwareGroup = self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup
 
             configuration = currentVarsDict['configuration']
