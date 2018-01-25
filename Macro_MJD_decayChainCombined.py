@@ -26,7 +26,7 @@ bslp = BSLoop.BSLoop()
 
 # BREAKING IT UP INTO STEPS SO CAN SAVE INTERMEDIATE PLOTS
 print('===================')
-print('...Set the configuration')
+print('...Set the configuration and cut')
 cV = {'configuration': 'DS1', 'cut': 1}
 bslp.SetCurrentVars(**cV)
 print('===================')
