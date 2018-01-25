@@ -15,4 +15,4 @@ Class BSCombine():
             """
             Add 'obj' to 'into' according to weight expressed in 'comboRule'
             """
-            
+            return None
