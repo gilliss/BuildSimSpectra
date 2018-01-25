@@ -24,8 +24,8 @@ class BSFindData():
             hardwareComponent = currentVarsDict['hardwareComponent']
             hardwareGroup = currentVarsDict['hardwareGroup']
 
-            if configuration and detector and !decayChain and segment and !branchingRatio and hardwareComponent and hardwareGroup:
+            #print(currentVarsDict)
+
+            if configuration and detector and (not decayChain) and segment and branchingRatio and hardwareComponent and (not hardwareGroup):
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
-                return fileName
-            else:
-                return None
+                print('  found file', fileName)
