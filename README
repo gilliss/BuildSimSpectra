@@ -1,5 +1,2 @@
 Description:
 Build arbitrary spectra from processed MaGe/Geant simulation data.
-
-Instructions:
-Must mv your macro file into the ToyBuildSpectra/ dir. Then execute the macro from there.
