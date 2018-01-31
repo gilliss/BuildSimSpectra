@@ -17,7 +17,7 @@ class BSCurrentVars():
                 'hardwareComponent': None,
                 'hardwareGroup': None,
 
-                'verbose': False
+                'verbose': 0
                 }
         return None
 
@@ -33,5 +33,8 @@ class BSCurrentVars():
     def GetCurrentVarsDict(self):
         return self.currentVarsDict
 
-    def SetVerbose(self, setting):
+    def SetVerbosity(self, setting):
+        """
+        Set the verbosity for output. 0 = None, 1 = a little more, ...
+        """
         self.SetCurrentVar(objType = 'verbose', val = setting)

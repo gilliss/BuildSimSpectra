@@ -2,7 +2,7 @@
 Class to find data from directory structures within mjdsim/ and elsewhere on PDSF
 """
 
-# import BaseClasses.BSCurrentVars as BSCurrentVars
+# import BaseClasses.BSCurrentVars as BSCurrentVars # A bscv object is fed in as a data member
 # bscv = BSCurrentVars.BSCurrentVars()
 
 import BaseClasses.BSPyROOT as BSPyROOT
@@ -25,6 +25,10 @@ class BSManageData():
             self.hardwareGroup = None
             return None
 
+        def Print(self, *args):
+            if self.bscv.GetCurrentVar('verbose') > 0:
+                print(args)
+
         def GetFullPath(self):
             """
             Get the full path to a file. Many variants based on what weightFuncs are on or off or what level of loop you in
@@ -45,7 +49,7 @@ class BSManageData():
 
             if cut and configuration and detector and (not decayChain) and segment and branchingRatio and hardwareComponent and (not hardwareGroup):
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
-                print('  found file', fileName)
+                self.Print('  found file', fileName)
 
         def GetFile(self):
             """

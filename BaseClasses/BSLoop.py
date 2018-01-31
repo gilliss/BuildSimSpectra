@@ -24,11 +24,11 @@ class BSLoop():
     def ReturnHello(self):
         return 'Hello'
 
-    def SetVerbose(self, setting):
-        bscv.SetVerbose(setting)
+    def SetVerbosity(self, setting):
+        bscv.SetVerbosity(setting)
 
     def Print(self, *args):
-        if bscv.GetCurrentVar('verbose'):
+        if bscv.GetCurrentVar('verbose') == 2:
             print(args)
 
     def SetCurrentVars(self, **currentVars):
