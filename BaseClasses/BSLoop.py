@@ -24,6 +24,13 @@ class BSLoop():
     def ReturnHello(self):
         return 'Hello'
 
+    def SetVerbose(self, setting):
+        bscv.SetVerbose(setting)
+
+    def Print(self, *args):
+        if bscv.GetCurrentVar('verbose'):
+            print(args)
+
     def SetCurrentVars(self, **currentVars):
         bscv.SetCurrentVar('configuration', currentVars['configuration'])
         bscv.SetCurrentVar('cut', currentVars['cut'])
@@ -43,7 +50,7 @@ class BSLoop():
         if(objType == 'detector'):
             for obj in bscd.GetDetectorList():
                 bscv.SetCurrentVar(objType, obj)
-                print(objType, bscv.GetCurrentVar(objType))
+                self.Print(objType, bscv.GetCurrentVar(objType))
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 bsmd.GetFile() # This syntax could be simplified with a BSCurrent.py class to hold the current var vals. bsmd would have access to BSCurrentVars
@@ -52,7 +59,7 @@ class BSLoop():
         if(objType == 'decayChain'):
             for obj in bscd.GetDecayChainList():
                 bscv.SetCurrentVar(objType, obj)
-                print(objType, bscv.GetCurrentVar(objType)) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
+                self.Print(objType, bscv.GetCurrentVar(objType)) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 bsmd.GetFile()
@@ -64,7 +71,7 @@ class BSLoop():
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
                         bscv.SetCurrentVar(objType, obj)
                         bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
-                        print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
+                        self.Print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
                         if recur:
                             self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
@@ -75,7 +82,7 @@ class BSLoop():
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
                     bscv.SetCurrentVar(objType, obj)
                     bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')][obj])
-                    print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('branchingRatio'))
+                    self.Print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('branchingRatio'))
                     if recur:
                         self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                     if not recur:
@@ -87,7 +94,7 @@ class BSLoop():
         if(objType == 'hardwareComponent'):
             for obj in bscd.GetHardwareComponentList():
                 bscv.SetCurrentVar(objType, obj)
-                print(objType, bscv.GetCurrentVar(objType))
+                self.Print(objType, bscv.GetCurrentVar(objType))
                 if recur:
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 bsmd.GetFile()

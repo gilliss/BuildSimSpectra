@@ -15,7 +15,9 @@ class BSCurrentVars():
                 'segment': None,
                 'branchingRatio': None,
                 'hardwareComponent': None,
-                'hardwareGroup': None
+                'hardwareGroup': None,
+
+                'verbose': False
                 }
         return None
 
@@ -30,3 +32,6 @@ class BSCurrentVars():
 
     def GetCurrentVarsDict(self):
         return self.currentVarsDict
+
+    def SetVerbose(self, setting):
+        self.SetCurrentVar(objType = 'verbose', val = setting)
