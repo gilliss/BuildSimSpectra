@@ -100,31 +100,5 @@ class BSLoop():
                 bsmd.GetFile()
             bscv.ResetCurrentVar(objType)
 
-    # def TestPassDict(self, objType = None, **recur):
-    #     if recur:
-    #         r_objType = recur['r_objType']
-    #         r_weightFunc = recur['r_weightFunc ']
-    #         r_recur = recur['r_recur']
-    #         print(r_objType, r_weightFunc , r_recur)
-
-    # def For(self, objType = None, weightFunc = None, **recur):
-    #     r_objType = recur['r_objType']
-    #     r_weightFunc = recur['r_weightFunc ']
-    #     r_recur = recur['r_recur']
-    #     if(objType == 'detector'):
-    #         for obj in bscd.GetDetectorList():
-    #             print('detector', obj)
-    #             #Recur(objType = recur_arg_dict['objType'], weightFunc = recur_arg_dict['self.current'], Recur = recur_arg_dict['Recur'])
-    #     if(objType == 'hwComponent'):
-    #         return objType
-    #     if(objType == 'decayChain'):
-    #         for obj in bscd.GetDecayChainList():
-    #             print('decayChain', obj)
-    #             #Recur(objType = recur_arg_dict['objType'], weightFunc = recur_arg_dict['self.current'], Recur = recur_arg_dict['Recur'])
-    #     if(objType == 'segment'):
-    #         return objType
-    #     else:
-    #         return None
-
 if __name__ == '__main__':
     BSLoop()
