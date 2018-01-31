@@ -59,12 +59,13 @@ class BSLoop():
             bscv.ResetCurrentVar(objType)
 
         if(objType == 'segment'):
+            print('test current val', bscv.GetCurrentVar(objType))
             if bscv.GetCurrentVar(objType) == None: # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
                 for decayChain in bscd.GetDecayChainSegmentBranchingRatioDict():
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
                         bscv.SetCurrentVar(objType, obj)
                         bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
-                        print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
+                        print('here', objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
                         if recur:
                             self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
@@ -74,7 +75,7 @@ class BSLoop():
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
                     bscv.SetCurrentVar(objType, obj)
-                    bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
+                    bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')][obj])
                     print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('branchingRatio'))
                     if recur:
                         self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
