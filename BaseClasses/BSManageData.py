@@ -46,7 +46,6 @@ class BSManageData():
             hardwareGroup = cvDict['hardwareGroup']
 
             #print(cvDict)
-
             if cut and configuration and detector and (not decayChain) and segment and branchingRatio and hardwareComponent and (not hardwareGroup):
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
                 self.Print('  found file', fileName)
@@ -54,7 +53,6 @@ class BSManageData():
         def GetFile(self):
             """
             Get the file and return an object that is useable
-            This method should be fed a struct with the necessary info to find the file, and pull out the right hist (currentVars)
             """
             fullPath = self.GetFullPath()
             return fullPath # return BSPyROOT.GetHist(fullPath)

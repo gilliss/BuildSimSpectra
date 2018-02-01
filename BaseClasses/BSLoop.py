@@ -22,7 +22,7 @@ class BSLoop():
         return None
 
     def ReturnHello(self):
-        return 'Hello'
+        print(bscd.GetDecayChainList())
 
     def SetVerbosity(self, setting):
         bscv.SetVerbosity(setting)
