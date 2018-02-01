@@ -23,6 +23,8 @@ class BSManageData():
             self.branchingRatio = None
             self.hardwareComponent = None
             self.hardwareGroup = None
+
+            self.basePathMJDSIM = '/global/projecta/projectdirs/majorana/sim/MJDG41003GAT/Spectra/'
             return None
 
         def Print(self, *args):
@@ -46,9 +48,12 @@ class BSManageData():
             hardwareGroup = cvDict['hardwareGroup']
 
             #print(cvDict)
+            # FILES LIKE: DUCopper_A210_Z81_1010102.root
             if cut and configuration and detector and (not decayChain) and segment and branchingRatio and hardwareComponent and (not hardwareGroup):
+                pathToFile = self.basePathMJDSIM + configuration + '/bulk/' + hardwareComponent + '/' + segment + '/'
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
-                self.Print('  found file', fileName)
+                fullPathToFile = pathToFile + fileName
+                self.Print('  found file', fullPathToFile)
 
         def GetFile(self):
             """
