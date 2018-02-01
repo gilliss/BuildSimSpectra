@@ -2,6 +2,8 @@
 Class to find data from directory structures within mjdsim/ and elsewhere on PDSF
 """
 
+import os
+
 # import BaseClasses.BSCurrentVars as BSCurrentVars # A bscv object is fed in as a data member
 # bscv = BSCurrentVars.BSCurrentVars()
 
@@ -53,7 +55,10 @@ class BSManageData():
                 pathToFile = self.basePathMJDSIM + configuration + '/bulk/' + hardwareComponent + '/' + segment + '/'
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
                 fullPathToFile = pathToFile + fileName
-                self.Print('  found file', fullPathToFile)
+                if(os.path.isfile(fullPathToFile)):
+                    self.Print('  found file', fileName)
+                else:
+                    self.Print('  did NOT find file', fileName)
 
         def GetFile(self):
             """
