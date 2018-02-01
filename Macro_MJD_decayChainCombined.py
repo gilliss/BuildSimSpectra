@@ -9,7 +9,7 @@ bslp = BSLoop.BSLoop()
 print('===================')
 bslp.SetVerbosity(2)
 print('...Set the configuration and cut')
-cV = {'configuration': 'DS1', 'cut': 1}
+cV = {'configuration': 'DS5', 'cut': 1}
 bslp.SetCurrentVars(**cV)
 print('===================')
 print('...For each detector, for each hardwareComponent, for each decayChain, add segments (add spectra: det_hw_segment)')
