@@ -41,9 +41,9 @@ class BSPyROOT():
         hName = 'h' + str(cut)
         h = c.GetPrimitive(hName)
         hArray = np.frombuffer(h.GetArray(), dtype = 'float', count = self.nBinsX, offset = 0) # getting array of data from PyDoubleBuffer object
-        xArray = np.arange(self.xmin, self.xmax + 1) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
+        xArray = np.arange(self.xmin + 0.5, self.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
-        plt.step(xArray, hArray, where = 'post', color='k')
+        plt.step(xArray, hArray, where = 'mid', color='k')
         plt.set_yscale('log', nonposy='clip')
         #ax.set_xlim(0, 3000)
 
