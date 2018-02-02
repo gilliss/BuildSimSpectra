@@ -76,5 +76,5 @@ class BSManageData():
                 bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
                 return fullPathToFile # return BSPyROOT.GetHist(fullPath)
             else:
-                self.Print('  did NOT find file', fileName)
+                self.Print('  did NOT find file')
                 return None
