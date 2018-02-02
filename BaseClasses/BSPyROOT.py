@@ -24,7 +24,7 @@ class BSPyROOT():
 
         return None
 
-        def GetBinnedData(self, fullPathToFile, **currentVarsDict):
+        def GetBinnedData(self, inFile, **currentVarsDict):
 
             cvDict = currentVarsDict
             cut = cvDict['cut']
@@ -36,7 +36,7 @@ class BSPyROOT():
             hardwareComponent = cvDict['hardwareComponent']
             hardwareGroup = cvDict['hardwareGroup']
 
-            f = TFile(fullPathToFile, 'READ')
+            f = TFile(inFile, 'READ')
             c = f.Get('c1')
             hName = 'h' + str(cut)
             h = c.GetPrimitive(hName)
@@ -48,7 +48,7 @@ class BSPyROOT():
             ax.set_yscale('log', nonposy='clip')
             #ax.set_xlim(0, 3000)
 
-            figName = '%s_%s_%s_%s.pdf' % (str(cut), hardwareComponent, segment, detector)
+            figName = '%s_%s_%s_%s.pdf' % (hardwareComponent, segment, detector, str(cut))
             print('  saving figure', figName)
             plt.savefig(figName)
 

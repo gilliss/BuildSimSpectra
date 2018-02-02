@@ -56,7 +56,7 @@ class BSManageData():
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
                 fullPathToFile = pathToFile + fileName
                 if(os.path.isfile(fullPathToFile)):
-                    #self.Print('  found file', fileName)
+                    self.Print('  found file', fileName)
                     return fullPathToFile
                 else:
                     #self.Print('  did NOT find file', fileName)
@@ -66,6 +66,11 @@ class BSManageData():
             """
             Get the file and return an object that is useable
             """
-            fullPathToFile = self.GetFullPath()
-            #self.Print(fullPathToFile)
-            return fullPathToFile # return BSPyROOT.GetHist(fullPath)
+            if self.GetFullPath() != None:
+                cvDict = self.bscv.GetCurrentVarsDict()
+                fullPathToFile = self.GetFullPath()
+                bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
+                #self.Print(fullPathToFile)
+                return fullPathToFile # return BSPyROOT.GetHist(fullPath)
+            else:
+                return None
