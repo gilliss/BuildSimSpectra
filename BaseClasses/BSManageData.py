@@ -16,7 +16,7 @@ class BSManageData():
         Methods to retrieve that data and return it as a useable object to be saved or combined.
         """
         def __init__(self, BSCurrentVarsObject):
-            self.bscv = BSCurrentVarsObject
+            self.bscv = BSCurrentVarsObject # bscv object is fed in as a data member. Fed from BSLoop.py
             self.cut = None
             self.configuration = None
             self.detector = None
@@ -56,13 +56,16 @@ class BSManageData():
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
                 fullPathToFile = pathToFile + fileName
                 if(os.path.isfile(fullPathToFile)):
-                    self.Print('  found file', fileName)
+                    #self.Print('  found file', fileName)
+                    return fullPathToFile
                 else:
-                    self.Print('  did NOT find file', fileName)
+                    #self.Print('  did NOT find file', fileName)
+                    return None
 
         def GetFile(self):
             """
             Get the file and return an object that is useable
             """
-            fullPath = self.GetFullPath()
-            return fullPath # return BSPyROOT.GetHist(fullPath)
+            fullPathToFile = self.GetFullPath()
+            #self.Print(fullPathToFile)
+            return fullPathToFile # return BSPyROOT.GetHist(fullPath)
