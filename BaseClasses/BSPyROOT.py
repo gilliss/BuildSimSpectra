@@ -40,8 +40,8 @@ class BSPyROOT():
         c = f.Get('c1')
         hName = 'h' + str(cut)
         h = c.GetPrimitive(hName)
-        
-        if !h.GetEntries():
+
+        if h.GetEntries() == 0:
             print('  skipping due to 0 entries (perhaps 0 assay for this decayChain/segment)')
         if h.GetEntries():
             print('  Working with:', h.GetName(), h.GetTitle(), h.GetEntries(), h.GetNbinsX())
