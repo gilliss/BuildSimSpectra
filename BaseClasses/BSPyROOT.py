@@ -49,6 +49,7 @@ class BSPyROOT():
             #ax.set_xlim(0, 3000)
 
             figName = '%s_%s_%s_%s.pdf' % (str(cut), hardwareComponent, segment, detector)
+            print('  saving figure', figName)
             plt.savefig(figName)
 
             return None
