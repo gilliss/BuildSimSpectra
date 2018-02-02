@@ -8,6 +8,7 @@ import os
 # bscv = BSCurrentVars.BSCurrentVars()
 
 import BaseClasses.BSPyROOT as BSPyROOT
+bspr = BSPyROOT.BSPyROOT()
 
 class BSManageData():
         """
@@ -72,9 +73,7 @@ class BSManageData():
             fullPathToFile = self.GetFullPath()
             if fullPathToFile != None:
                 cvDict = self.bscv.GetCurrentVarsDict()
-                bspr = BSPyROOT.BSPyROOT()
                 bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
-                del bspr
                 return fullPathToFile # return BSPyROOT.GetHist(fullPath)
             else:
                 return None
