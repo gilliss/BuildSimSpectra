@@ -44,7 +44,7 @@ class BSPyROOT():
         xArray = np.arange(self.xmin, self.xmax + 1) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
         fig, (ax) = plt.subplots(nrows = 2, ncols = 1)
-        ax.hist(hArray, xArray, align = 'mid', histtype='step', color='k')
+        ax.step(xArray, hArray, where = 'post', color='k')
         ax.set_yscale('log', nonposy='clip')
         #ax.set_xlim(0, 3000)
 
@@ -55,6 +55,11 @@ class BSPyROOT():
         return None
 
 # NOTES
+    # where : [ ‘pre’ | ‘post’ | ‘mid’ ]
+    # If ‘pre’ (the default), the interval from x[i] to x[i+1] has level y[i+1].
+    # If ‘post’, that interval has level y[i].
+    # If ‘mid’, the jumps in y occur half-way between the x-values.
+
     # For all histogram types: nbins, xlow, xup:
     # bin = 0;       underflow bin
     # bin = 1;       first bin with low-edge xlow INCLUDED
@@ -69,7 +74,6 @@ class BSPyROOT():
     # (double) 10000.000
     # root [30] h->GetXaxis()->GetBinLowEdge(10000)
     # (double) 9999.0000
-
 
    # FILES LIKE: DUCopper_A210_Z81_1010102.root:
    # KEY: TCanvas  c1;1    A canvas
