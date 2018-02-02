@@ -42,7 +42,8 @@ class BSPyROOT():
         h = c.GetPrimitive(hName)
 
         if h.GetEntries() == 0:
-            print('  skipping due to 0 entries (perhaps 0 assay for this decayChain/segment)')
+            # Even if 0 entries, should still return an array of zeros so that the combination procedure goes smoothly
+            print('  skipping due to 0 entries (perhaps 0 assay for this decayChain/segment), BE CAREFUL IF NEEDED FOR MASS NORM')
         if h.GetEntries():
             print('  Working with:', h.GetName(), h.GetTitle(), h.GetEntries(), h.GetNbinsX())
             hArray = np.frombuffer(h.GetArray(), dtype = 'float', count = self.nBinsX, offset = 0) # getting array of data from PyDoubleBuffer object
