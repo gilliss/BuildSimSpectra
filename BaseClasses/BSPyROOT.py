@@ -51,6 +51,9 @@ class BSPyROOT():
         figName = '%s_%s_%s_%s.pdf' % (hardwareComponent, segment, detector, str(cut))
         print('  Saving figure', figName)
         plt.savefig(figName)
+        del f
+        del c
+        del h
 
         return None
 
