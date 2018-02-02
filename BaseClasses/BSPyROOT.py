@@ -24,35 +24,35 @@ class BSPyROOT():
 
         return None
 
-        def GetBinnedData(self, inFile, **currentVarsDict):
+    def GetBinnedData(self, inFile, **currentVarsDict):
 
-            cvDict = currentVarsDict
-            cut = cvDict['cut']
-            configuration = cvDict['configuration']
-            detector = cvDict['detector']
-            decayChain = cvDict['decayChain']
-            segment = cvDict['segment']
-            branchingRatio = cvDict['branchingRatio']
-            hardwareComponent = cvDict['hardwareComponent']
-            hardwareGroup = cvDict['hardwareGroup']
+        cvDict = currentVarsDict
+        cut = cvDict['cut']
+        configuration = cvDict['configuration']
+        detector = cvDict['detector']
+        decayChain = cvDict['decayChain']
+        segment = cvDict['segment']
+        branchingRatio = cvDict['branchingRatio']
+        hardwareComponent = cvDict['hardwareComponent']
+        hardwareGroup = cvDict['hardwareGroup']
 
-            f = TFile(inFile, 'READ')
-            c = f.Get('c1')
-            hName = 'h' + str(cut)
-            h = c.GetPrimitive(hName)
-            hArray = np.frombuffer(h.GetArray(), dtype = 'float', count = self.nBinsX, offset = 0) # getting array of data from PyDoubleBuffer object
-            xArray = np.arange(self.xmin, self.xmax + 1) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
+        f = TFile(inFile, 'READ')
+        c = f.Get('c1')
+        hName = 'h' + str(cut)
+        h = c.GetPrimitive(hName)
+        hArray = np.frombuffer(h.GetArray(), dtype = 'float', count = self.nBinsX, offset = 0) # getting array of data from PyDoubleBuffer object
+        xArray = np.arange(self.xmin, self.xmax + 1) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
-            fig, (ax) = plt.subplots(nrows = 2, ncols = 1)
-            ax.hist(hArray, xArray, align = 'mid', histtype='step', color='k')
-            ax.set_yscale('log', nonposy='clip')
-            #ax.set_xlim(0, 3000)
+        fig, (ax) = plt.subplots(nrows = 2, ncols = 1)
+        ax.hist(hArray, xArray, align = 'mid', histtype='step', color='k')
+        ax.set_yscale('log', nonposy='clip')
+        #ax.set_xlim(0, 3000)
 
-            figName = '%s_%s_%s_%s.pdf' % (hardwareComponent, segment, detector, str(cut))
-            print('  saving figure', figName)
-            plt.savefig(figName)
+        figName = '%s_%s_%s_%s.pdf' % (hardwareComponent, segment, detector, str(cut))
+        print('  saving figure', figName)
+        plt.savefig(figName)
 
-            return None
+        return None
 
 # NOTES
     # For all histogram types: nbins, xlow, xup:
