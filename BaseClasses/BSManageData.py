@@ -54,6 +54,8 @@ class BSManageData():
             plt.yscale('log')#, nonposy='clip')
             plt.xlim(0.0, 10000.0)
 
+            print('  figure has %d counts' % (np.sum(date)))
+
             figName = '%s_%s_%sCombined_%s.pdf' % (hardwareComponent, detector, decayChain, str(cut))
             print('  Saving figure', figName)
             plt.savefig(figName)
