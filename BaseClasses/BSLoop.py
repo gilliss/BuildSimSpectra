@@ -56,6 +56,7 @@ class BSLoop():
             for i in range(len(bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')])):
                 if bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')][i] == bscd.GetDetectorList()[i]:
                     activeDetectorSNList.append(bscd.GetDetectorList()[i])
+            print(activeDetectorSNList)
             for obj in activeDetectorSNList: #bscd.GetDetectorList():
                 bscv.SetCurrentVar(objType, obj)
                 self.Print(objType, bscv.GetCurrentVar(objType))
