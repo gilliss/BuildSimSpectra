@@ -42,7 +42,7 @@ class BSManageData():
 
             plt.step(xArray, data, where = 'mid', color='k')
             plt.yscale('log')#, nonposy='clip')
-            plt.xlim(self.xmin, self.xmax)
+            plt.xlim(0.0, 10000.0)
 
             figName = '%s_%s_%sCombined_%s.pdf' % (self.hardwareComponent, self.detector, self.decayChain, str(cut))
             print('  Saving figure', figName)
