@@ -12,7 +12,7 @@ bscv = BSCurrentVars.BSCurrentVars()
 import BaseClasses.BSManageData as BSManageData
 bsmd = BSManageData.BSManageData(bscv) # bsmd needs the bscv object passed into it
 
-import BaseClasses.BSCombineData as BSCombineData
+import BaseClasses.BSCombine as BSCombine
 bscDict = {}
 
 class BSLoop():
@@ -72,7 +72,7 @@ class BSLoop():
         if(objType == 'segment'):
             if bscv.GetCurrentVar('decayChain') == None: # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
                 for decayChain in bscd.GetDecayChainSegmentBranchingRatioDict():
-                    bscDict[objType] = BSCombineData.BSCombineData(weightFunc) # BSCombineData instantiate for each decayChain
+                    bscDict[objType] = BSCombine.BSCombine(weightFunc) # BSCombineData instantiate for each decayChain
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
                         bscv.SetCurrentVar(objType, obj)
                         bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
