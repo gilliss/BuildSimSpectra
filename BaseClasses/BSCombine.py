@@ -4,7 +4,7 @@ A class to facilitate combination of sim results
 
 import pandas as pd
 
-Class BSCombine():
+class BSCombine():
         """
         A class to facilitate combination of sim results
         """
