@@ -6,7 +6,7 @@ import BaseClasses.ConfigurationData.Private_ConfigData as ConfigData # Insert y
 cfgd = ConfigData.ConfigData()
 
 class BSConfigData():
-    def __init__(self, ConfigData):
+    def __init__(self):
         return None
 
     def GetConfigurationList(self):
