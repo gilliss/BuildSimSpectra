@@ -10,6 +10,9 @@ import os
 import BaseClasses.BSPyROOT as BSPyROOT
 bspr = BSPyROOT.BSPyROOT()
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 class BSManageData():
         """
         Class to find data from directory structures within mjdsim/ and elsewhere on PDSF
@@ -32,6 +35,18 @@ class BSManageData():
         def Print(self, *args):
             if self.bscv.GetCurrentVar('verbose') > 0:
                 print(args)
+
+        def Save(self, data):
+
+            xArray = np.arange(0.0 + 0.5, 10000.0 + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
+
+            plt.step(xArray, hArray, where = 'mid', color='k')
+            plt.yscale('log')#, nonposy='clip')
+            plt.xlim(self.xmin, self.xmax)
+
+            figName = '%s_%s_%sCombined_%s.pdf' % (self.hardwareComponent, self.detector, self.decayChain, str(cut))
+            print('  Saving figure', figName)
+            plt.savefig(figName)
 
         def GetFullPath(self):
             """

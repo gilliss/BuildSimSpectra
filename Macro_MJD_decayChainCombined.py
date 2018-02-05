@@ -15,7 +15,7 @@ print('===================')
 print('...For each detector, for each hardwareComponent, for each decayChain, add segments (add spectra: det_hw_segment)')
 recurSegment = {'r_objType': 'segment', 'r_weightFunc': None, 'r_recur': {}} # end recursion upon {} # use the segment-only (no explicit decayChain loop) syntax
 recurHardwareComponent = {'r_objType': 'hardwareComponent', 'r_weightFunc': None, 'r_recur': recurSegment}
-bslp.For(objType = 'detector', weightFunc = 'WeightBranchingRatio', **recurHardwareComponent)
+bslp.For(objType = 'detector', weightFunc = None, **recurHardwareComponent)
 print('...Results are spectra: det_hw_chain')
 print('===================')
 # print('...For each detector, for each decayChain, add hardwareComponents (add spectra: det_hw_chain)')

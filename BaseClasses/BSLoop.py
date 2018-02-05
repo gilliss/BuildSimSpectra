@@ -84,6 +84,7 @@ class BSLoop():
                             data = bsmd.GetData() # bscDict[objType].Add(bsmd.GetData())
                         bscDict[objType].Add(data) # add data into combo for this level
                     bscv.ResetCurrentVar(objType)
+                    bsmd.Save(bscDict[objType].GetCombinedData()) # save the combo of this level
                     del bscDict[objType] # del BSCombineData instance
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
@@ -104,6 +105,8 @@ class BSLoop():
                     self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 bsmd.GetData()
             bscv.ResetCurrentVar(objType)
+
+        return combinedData
 
 if __name__ == '__main__':
     BSLoop()
