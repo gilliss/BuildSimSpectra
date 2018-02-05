@@ -82,7 +82,8 @@ class BSLoop():
                             data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
                             data = bsmd.GetData() # bscDict[objType].Add(bsmd.GetData())
-                        bscDict[objType].Add(data) # add data into combo for this level
+                        if len(data) > 0:
+                            bscDict[objType].Add(data) # add data into combo for this level
                     bscv.ResetCurrentVar(objType)
                     bsmd.Save(bscDict[objType].GetCombinedData()) # save the combo of this level
                     del bscDict[objType] # del BSCombineData instance
@@ -106,7 +107,7 @@ class BSLoop():
                 bsmd.GetData()
             bscv.ResetCurrentVar(objType)
 
-        return combinedData
+        return None
 
 if __name__ == '__main__':
     BSLoop()
