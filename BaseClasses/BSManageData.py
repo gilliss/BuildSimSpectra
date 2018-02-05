@@ -73,7 +73,7 @@ class BSManageData():
             fullPathToFile = self.GetFullPath()
             if fullPathToFile != None:
                 cvDict = self.bscv.GetCurrentVarsDict()
-                bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
-                return fullPathToFile # return BSPyROOT.GetHist(fullPath)
+                return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
+                #return fullPathToFile
             else:
                 return None
