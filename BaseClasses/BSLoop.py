@@ -72,6 +72,7 @@ class BSLoop():
         if(objType == 'segment'):
             if bscv.GetCurrentVar('decayChain') == None: # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
                 for decayChain in bscd.GetDecayChainSegmentBranchingRatioDict():
+                    bscv.SetCurrentVar('decayChain', decayChain)
                     bscDict[objType] = BSCombine.BSCombine(weightFunc) # BSCombineData instantiate for each decayChain
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
                         bscv.SetCurrentVar(objType, obj)
@@ -87,6 +88,7 @@ class BSLoop():
                     bscv.ResetCurrentVar(objType)
                     bsmd.SaveFig(bscDict[objType].GetCombinedData()) # save fig of the combo of this level
                     del bscDict[objType] # del BSCombineData instance
+                    bscv.ResetCurrentVar('decayChain')
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
                     bscv.SetCurrentVar(objType, obj)
