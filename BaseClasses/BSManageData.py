@@ -37,6 +37,16 @@ class BSManageData():
                 print(args)
 
         def SaveFig(self, data):
+            configuration, detector, decayChain, segment, branchingRatio, hardwareComponent, hardwareGroup = self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup
+            cvDict = self.bscv.GetCurrentVarsDict()
+            cut = cvDict['cut']
+            configuration = cvDict['configuration']
+            detector = cvDict['detector']
+            decayChain = cvDict['decayChain']
+            segment = cvDict['segment']
+            branchingRatio = cvDict['branchingRatio']
+            hardwareComponent = cvDict['hardwareComponent']
+            hardwareGroup = cvDict['hardwareGroup']
 
             xArray = np.arange(0.0 + 0.5, 10000.0 + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
@@ -44,7 +54,7 @@ class BSManageData():
             plt.yscale('log')#, nonposy='clip')
             plt.xlim(0.0, 10000.0)
 
-            figName = '%s_%s_%sCombined_%s.pdf' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut))
+            figName = '%s_%s_%sCombined_%s.pdf' % (hardwareComponent, detector, decayChain, str(cut))
             print('  Saving figure', figName)
             plt.savefig(figName)
 
@@ -53,7 +63,6 @@ class BSManageData():
             Get the full path to a file. Many variants based on what weightFuncs are on or off or what level of loop you in
             """
             configuration, detector, decayChain, segment, branchingRatio, hardwareComponent, hardwareGroup = self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup
-
             cvDict = self.bscv.GetCurrentVarsDict()
             cut = cvDict['cut']
             configuration = cvDict['configuration']
