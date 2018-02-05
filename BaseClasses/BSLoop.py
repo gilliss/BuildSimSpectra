@@ -76,7 +76,8 @@ class BSLoop():
                             self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
                             None#print('...end of line, finding bottom-level sim files')
-                        print('GetFile:', bsmd.GetFile()[0:5])
+                        if bsmd.GetFile != None:
+                            print('GetFile:', bsmd.GetFile()[0:5])
                     bscv.ResetCurrentVar(objType)
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
