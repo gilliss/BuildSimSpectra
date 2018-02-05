@@ -65,7 +65,7 @@ class BSManageData():
                 self.Print('  not looking for file at this level')
                 return None
 
-        def GetFile(self):
+        def GetData(self):
             """
             Get the file and return an object that is useable
             """
@@ -73,7 +73,6 @@ class BSManageData():
             fullPathToFile = self.GetFullPath()
             if fullPathToFile != None:
                 cvDict = self.bscv.GetCurrentVarsDict()
-                return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
-                #return fullPathToFile
+                return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict) #return fullPathToFile
             else:
                 return []

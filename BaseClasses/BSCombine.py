@@ -11,7 +11,7 @@ Class BSCombine():
         def __init__(self):
             return None
 
-        def Add(obj = None, into = None, comboRule = None):
+        def Add(obj = None, into = None, weightFunc = None):
             """
             Add 'obj' to 'into' according to weight expressed in 'comboRule'
             """
