@@ -85,7 +85,7 @@ class BSLoop():
                         if len(data) > 0:
                             bscDict[objType].Add(data) # add data into combo for this level
                     bscv.ResetCurrentVar(objType)
-                    bsmd.Save(bscDict[objType].GetCombinedData()) # save the combo of this level
+                    bsmd.SaveFig(bscDict[objType].GetCombinedData()) # save fig of the combo of this level
                     del bscDict[objType] # del BSCombineData instance
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:

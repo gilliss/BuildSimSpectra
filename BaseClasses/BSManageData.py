@@ -36,7 +36,7 @@ class BSManageData():
             if self.bscv.GetCurrentVar('verbose') > 0:
                 print(args)
 
-        def Save(self, data):
+        def SaveFig(self, data):
 
             xArray = np.arange(0.0 + 0.5, 10000.0 + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
@@ -44,7 +44,7 @@ class BSManageData():
             plt.yscale('log')#, nonposy='clip')
             plt.xlim(0.0, 10000.0)
 
-            figName = '%s_%s_%sCombined_%s.pdf' % (self.hardwareComponent, self.detector, self.decayChain, str(cut))
+            figName = '%s_%s_%sCombined_%s.pdf' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut))
             print('  Saving figure', figName)
             plt.savefig(figName)
 
