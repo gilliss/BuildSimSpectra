@@ -16,5 +16,5 @@ class BSCombine():
             """
             Add 'obj' to 'into' according to weight expressed in 'comboRule'
             """
-            print('adding current hist')
+            print('  adding current hist')
             return None
