@@ -40,7 +40,7 @@ class BSManageData():
 
             xArray = np.arange(0.0 + 0.5, 10000.0 + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
-            plt.step(xArray, hArray, where = 'mid', color='k')
+            plt.step(xArray, data, where = 'mid', color='k')
             plt.yscale('log')#, nonposy='clip')
             plt.xlim(self.xmin, self.xmax)
 
