@@ -75,7 +75,7 @@ class BSManageData():
 
             #print(cvDict)
             # FILES LIKE: DUCopper_A210_Z81_1010102.root
-            if cut and configuration and detector and (not decayChain) and segment and branchingRatio and hardwareComponent and (not hardwareGroup):
+            if cut and configuration and detector and decayChain and segment and branchingRatio and hardwareComponent and (not hardwareGroup):
                 pathToFile = self.basePathMJDSIM + configuration + '/bulk/' + hardwareComponent + '/' + segment + '/'
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
                 fullPathToFile = pathToFile + fileName
