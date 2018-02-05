@@ -13,6 +13,7 @@ import BaseClasses.BSManageData as BSManageData
 bsmd = BSManageData.BSManageData(bscv) # bsmd needs the bscv object passed into it
 
 import BaseClasses.BSCombineData as BSCombineData
+bscDict = {}
 
 class BSLoop():
     """
@@ -34,6 +35,7 @@ class BSLoop():
             print(args)
 
     def SetCurrentVars(self, **currentVars):
+        # make this an automatic for loop through the **currentVars dict {bascv.SetCurrentVar(obj, currentVars[obj])}
         bscv.SetCurrentVar('configuration', currentVars['configuration'])
         bscv.SetCurrentVar('cut', currentVars['cut'])
 
@@ -69,19 +71,20 @@ class BSLoop():
 
         if(objType == 'segment'):
             if bscv.GetCurrentVar('decayChain') == None: # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
-                # BSCombineData instantiate
                 for decayChain in bscd.GetDecayChainSegmentBranchingRatioDict():
+                    bscDict[objType] = BSCombineData.BSCombineData(weightFunc) # BSCombineData instantiate for each decayChain
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
                         bscv.SetCurrentVar(objType, obj)
                         bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
                         self.Print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
+                        data = []
                         if recur:
-                            self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
+                            data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
-                            None#print('...end of line, finding bottom-level sim files')
-                        bsmd.GetData() # BSCombineData.Add(bsmd.GetData())
+                            data = bsmd.GetData() # bscDict[objType].Add(bsmd.GetData())
+                        bscDict[objType].Add(data) # add data into combo for this level
                     bscv.ResetCurrentVar(objType)
-                # del BSCombineData instance
+                    del bscDict[objType] # del BSCombineData instance
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
                     bscv.SetCurrentVar(objType, obj)
@@ -89,8 +92,6 @@ class BSLoop():
                     self.Print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('branchingRatio'))
                     if recur:
                         self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                    if not recur:
-                        None#print('...end of line, finding bottom-level sim files')
                     bsmd.GetData()
                 bscv.ResetCurrentVar(objType)
                 bscv.ResetCurrentVar('branchingRatio')
