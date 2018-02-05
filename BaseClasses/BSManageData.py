@@ -76,4 +76,4 @@ class BSManageData():
                 return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
                 #return fullPathToFile
             else:
-                return None
+                return []
