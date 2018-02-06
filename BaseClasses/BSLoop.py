@@ -56,7 +56,6 @@ class BSLoop():
             for i in range(len(bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')])):
                 if bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')][i] == 1:
                     activeDetectorSNList.append(bscd.GetDetectorList()[i])
-            print(activeDetectorSNList)
             for obj in activeDetectorSNList: #bscd.GetDetectorList():
                 bscv.SetCurrentVar(objType, obj)
                 self.Print(objType, bscv.GetCurrentVar(objType))
@@ -78,7 +77,7 @@ class BSLoop():
             if bscv.GetCurrentVar('decayChain') == None: # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
                 for decayChain in bscd.GetDecayChainSegmentBranchingRatioDict():
                     bscv.SetCurrentVar('decayChain', decayChain)
-                    bscDict[objType] = BSCombine.BSCombine(weightFunc) # BSCombineData instantiate for each decayChain
+                    bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombineData instantiate for each decayChain
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
                         bscv.SetCurrentVar(objType, obj)
                         bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
