@@ -87,9 +87,9 @@ class BSLoop():
                             data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
                             data = bsmd.GetData() # return the data up into these loops
-                        if len(data) > 0:
+                        if (len(data) > 0) and (weightFunc not None):
                             bscDict[objType].Add(data) # add data into combo for this level
-                            # bsmd.SaveFig(data)
+                            # bsmd.SaveFig(data) # save the intermediate hist too, not just the combo hist below
                         bscv.ResetCurrentVar('branchingRatio')
                     bscv.ResetCurrentVar(objType)
                     bsmd.SaveFig(bscDict[objType].GetCombinedData()) # save fig of the combo of this level
