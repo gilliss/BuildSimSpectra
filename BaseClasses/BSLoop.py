@@ -89,10 +89,10 @@ class BSLoop():
                             data = bsmd.GetData() # return the data up into these loops
                         if (len(data) > 0) and (weightFunc != None):
                             bscDict[objType].Add(data) # add data into combo for this level
-                            # bsmd.SaveFig(data) # save the intermediate hist too, not just the combo hist below
+                            # bsmd.Save(data, sDat = True, sFig = False) # save the intermediate hist too, not just the combo hist below
                         bscv.ResetCurrentVar('branchingRatio')
                     bscv.ResetCurrentVar(objType)
-                    bsmd.SaveFig(bscDict[objType].GetCombinedData()) # save fig of the combo of this level
+                    bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
                     del bscDict[objType] # del BSCombineData instance
                     bscv.ResetCurrentVar('decayChain')
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro

@@ -49,7 +49,7 @@ class BSManageData():
             self.hardwareComponent = cvDict['hardwareComponent']
             self.hardwareGroup = cvDict['hardwareGroup']
 
-        def SaveFig(self, data):
+        def Save(self, data, sDat, sFig):
             print('  Hist integral (np.sum) =', np.sum(data))
 
             xArray = np.arange(bspr.xmin + 0.5, bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
@@ -60,9 +60,12 @@ class BSManageData():
             plt.xlim(bspr.xmin, bspr.xmax)
 
             if self.GetWritePath() != None:
-                figName = self.GetWritePath() + '.pdf'
-                self.Print('  Saving figure', figName)
-                plt.savefig(figName)
+                if sDat == True:
+                    self.Print('  Saving data', figName)
+                if sFig == True:
+                    figName = self.GetWritePath() + '.pdf'
+                    self.Print('  Saving figure', figName)
+                    plt.savefig(figName)
             else:
                 self.Print('  SaveFig: GetWritePath is None. Not saving.')
 
