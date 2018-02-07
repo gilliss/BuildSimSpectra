@@ -53,13 +53,13 @@ class BSCombine():
 
             if weightFunc == 'One':
                 return 1
-
-            if weightFunc == 'BranchingRatio':
+            elif weightFunc == 'BranchingRatio':
                 return self.branchingRatio
-
-            if weightFunc == 'TotalMass':
+            elif weightFunc == 'TotalMass':
                 activeDetectorMassList = []
                 for i in range(len(self.bscd.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
                     if self.bscd.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
                         activeDetectorMassList.append(self.bscd.GetDetectorMassList()[i])
                 return 1/np.sum(activeDetectorMassList)
+            else:
+                print('  GetWeight: weightFunc not recognized')
