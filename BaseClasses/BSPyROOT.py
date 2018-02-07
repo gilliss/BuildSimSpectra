@@ -42,12 +42,13 @@ class BSPyROOT():
         h = c.GetPrimitive(hName)
 
         hArray = np.zeros(self.nBinsX)
-        if h.GetEntries() == 0:
-            # Even if 0 entries, should still return an array of zeros so that the combination procedure goes smoothly
-            print('  skipping due to 0 entries (perhaps 0 assay for this decayChain/segment), BE CAREFUL IF NEEDED FOR MASS NORM')
-        if h.GetEntries():
+        if h.GetEntries() > 0:
             print('  Working with:', h.GetName(), h.GetTitle(), h.GetNbinsX(), h.GetEntries(), h.Integral())
             hArray = np.frombuffer(h.GetArray(), dtype = 'float', count = self.nBinsX, offset = 0) # getting array of data from PyDoubleBuffer object
+        else:
+            print('  0 entries. Perhaps 0 MC hits? Returning hArray = zeros due.')
+
+            # PLOTTING
             # xArray = np.arange(self.xmin + 0.5, self.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
             #
             # plt.step(xArray, hArray, where = 'mid', color='k')
