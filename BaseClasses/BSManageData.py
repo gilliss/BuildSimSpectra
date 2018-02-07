@@ -115,6 +115,7 @@ class BSManageData():
             fullPathToFile = self.GetReadPath()
             if fullPathToFile != None:
                 cvDict = self.bscv.GetCurrentVarsDict()
-                return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
+                if self.basePathMJDSIM in fullPathToFile:
+                    return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
             else:
                 return []
