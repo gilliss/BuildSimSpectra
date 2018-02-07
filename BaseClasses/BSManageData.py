@@ -101,7 +101,7 @@ class BSManageData():
             fullPathToFile = ''
 
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
-                pathToFile = self.basePathWrite + self.configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
+                pathToFile = self.basePathWrite
                 fileName = '%s_%s_%s' % (self.hardwareComponent, self.segment, self.detector)
                 fullPathToFile = pathToFile + fileName
 
