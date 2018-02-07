@@ -61,7 +61,7 @@ class BSManageData():
 
             if self.GetWritePath() != None:
                 if sDat == True:
-                    self.Print('  Saving data', figName)
+                    self.Print('  Saving data', None)
                 if sFig == True:
                     figName = self.GetWritePath() + '.pdf'
                     self.Print('  Saving figure', figName)
