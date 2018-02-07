@@ -84,7 +84,7 @@ class BSLoop():
                         self.Print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
                         data = []
                         if recur:
-                            data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
+                            data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur) # perform sub-loop and return combinedData
                         if not recur:
                             data = bsmd.GetData() # return the data up into these loops
                         if (len(data) > 0) and (weightFunc != None):
@@ -92,19 +92,28 @@ class BSLoop():
                             bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
                         bscv.ResetCurrentVar('branchingRatio')
                     bscv.ResetCurrentVar(objType)
-                    bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
+                    if weightFunc != None:
+                        bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
                     del bscDict[objType] # del BSCombineData instance
                     bscv.ResetCurrentVar('decayChain')
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
                     bscv.SetCurrentVar(objType, obj)
                     bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')][obj])
+                    bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
                     self.Print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('branchingRatio'))
+                    data = []
                     if recur:
-                        self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                    bsmd.GetData()
+                        data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
+                    if not recur:
+                        data = bsmd.GetData() # return the data up into these loops
+                    if (len(data) > 0) and (weightFunc != None):
+                        bscDict[objType].Add(data) # add data into combo for this level
+                        bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
                 bscv.ResetCurrentVar(objType)
                 bscv.ResetCurrentVar('branchingRatio')
+                if weightFunc != None:
+                    bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
 
         if(objType == 'hardwareComponent'):
             for obj in bscd.GetHardwareComponentList():
