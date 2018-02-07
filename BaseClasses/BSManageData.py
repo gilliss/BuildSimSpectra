@@ -61,11 +61,13 @@ class BSManageData():
 
             if self.GetWritePath() != None:
                 if sDat == True:
-                    self.Print('  Saving data', None)
+                    fileName = self.GetWritePath() # numpy will automatically append .npy
+                    self.Print('  Saving data', fileName)
+                    np.save(fileName, data)
                 if sFig == True:
-                    figName = self.GetWritePath() + '.pdf'
-                    self.Print('  Saving figure', figName)
-                    plt.savefig(figName)
+                    fileName = self.GetWritePath() + '.pdf'
+                    self.Print('  Saving figure', fileName)
+                    plt.savefig(fileName)
             else:
                 self.Print('  SaveFig: GetWritePath is None. Not saving.')
 
@@ -97,6 +99,11 @@ class BSManageData():
             self.UpdateSelfCurrentVars()
 
             fullPathToFile = ''
+
+            if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
+                pathToFile = self.basePathWrite + self.configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
+                fileName = '%s_%s_%s' % (self.hardwareComponent, self.segment, self.detector)
+                fullPathToFile = pathToFile + fileName
 
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
