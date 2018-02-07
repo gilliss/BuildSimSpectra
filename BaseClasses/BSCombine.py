@@ -38,7 +38,7 @@ class BSCombine():
             hardwareComponent = cvDict['hardwareComponent']
             hardwareGroup = cvDict['hardwareGroup']
 
-            if weightFunc == 'Unity':
+            if weightFunc == 'One':
                 return 1
 
             if weightFunc == 'BranchingRatio':

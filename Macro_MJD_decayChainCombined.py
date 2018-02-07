@@ -13,7 +13,7 @@ cV = {'configuration': 'DS5', 'cut': 1}
 bslp.SetCurrentVars(**cV)
 print('===================')
 print('...For each detector, for each hardwareComponent, for each decayChain, add segments (add spectra: det_hw_segment)')
-recurSegment = {'r_objType': 'segment', 'r_weightFunc': None, 'r_recur': {}} # end recursion upon {} # use the segment-only (no explicit decayChain loop) syntax
+recurSegment = {'r_objType': 'segment', 'r_weightFunc': 'One', 'r_recur': {}} # end recursion upon {} # use the segment-only (no explicit decayChain loop) syntax
 recurHardwareComponent = {'r_objType': 'hardwareComponent', 'r_weightFunc': None, 'r_recur': recurSegment}
 bslp.For(objType = 'detector', weightFunc = None, **recurHardwareComponent)
 print('...Results are spectra: det_hw_chain')
