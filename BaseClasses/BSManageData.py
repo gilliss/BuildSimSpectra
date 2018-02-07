@@ -30,54 +30,56 @@ class BSManageData():
             self.hardwareGroup = None
 
             self.basePathMJDSIM = '/global/projecta/projectdirs/majorana/sim/MJDG41003GAT/Spectra/'
+            self.basePathWrite = '/global/homes/g/gilliss/BuildSpectra_Output/'
+
             return None
 
         def Print(self, *args):
             if self.bscv.GetCurrentVar('verbose') > 0:
                 print(args)
 
-        def SaveFig(self, data):
-            configuration, detector, decayChain, segment, branchingRatio, hardwareComponent, hardwareGroup = self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup
+        def UpdateSelfCurrentVars(self):
             cvDict = self.bscv.GetCurrentVarsDict()
-            cut = cvDict['cut']
-            configuration = cvDict['configuration']
-            detector = cvDict['detector']
-            decayChain = cvDict['decayChain']
-            segment = cvDict['segment']
-            branchingRatio = cvDict['branchingRatio']
-            hardwareComponent = cvDict['hardwareComponent']
-            hardwareGroup = cvDict['hardwareGroup']
+            self.cut = cvDict['cut']
+            self.configuration = cvDict['configuration']
+            self.detector = cvDict['detector']
+            self.decayChain = cvDict['decayChain']
+            self.segment = cvDict['segment']
+            self.branchingRatio = cvDict['branchingRatio']
+            self.hardwareComponent = cvDict['hardwareComponent']
+            self.hardwareGroup = cvDict['hardwareGroup']
 
-            xArray = np.arange(0.0 + 0.5, 10000.0 + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
+        def SaveFig(self, data):
+            xArray = np.arange(bspr.xmin + 0.5, bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
             plt.step(xArray, data, where = 'mid', color='k')
             plt.yscale('log')#, nonposy='clip')
-            plt.xlim(0.0, 10000.0)
+            plt.xlim(bspr.xmin, bspr.xmax)
 
-            print('  figure counts: ', np.sum(data))
+            print('  hist integral (np.sum): ', np.sum(data))
 
-            figName = '%s_%s_%sCombined_%s.pdf' % (hardwareComponent, detector, decayChain, str(cut))
+            figName = self.GetWritePath() + '.pdf'
             print('  Saving figure', figName)
             plt.savefig(figName)
 
-        def GetFullPath(self):
+        def GetReadPath(self):
             """
-            Get the full path to a file. Many variants based on what weightFuncs are on or off or what level of loop you in
+            Get the full path to a file. Many variants based on what weightFuncs are on or off or what level of loop you're in
             """
-            configuration, detector, decayChain, segment, branchingRatio, hardwareComponent, hardwareGroup = self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup
-            cvDict = self.bscv.GetCurrentVarsDict()
-            cut = cvDict['cut']
-            configuration = cvDict['configuration']
-            detector = cvDict['detector']
-            decayChain = cvDict['decayChain']
-            segment = cvDict['segment']
-            branchingRatio = cvDict['branchingRatio']
-            hardwareComponent = cvDict['hardwareComponent']
-            hardwareGroup = cvDict['hardwareGroup']
+            # configuration, detector, decayChain, segment, branchingRatio, hardwareComponent, hardwareGroup = self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup
+            # cvDict = self.bscv.GetCurrentVarsDict()
+            # cut = cvDict['cut']
+            # configuration = cvDict['configuration']
+            # detector = cvDict['detector']
+            # decayChain = cvDict['decayChain']
+            # segment = cvDict['segment']
+            # branchingRatio = cvDict['branchingRatio']
+            # hardwareComponent = cvDict['hardwareComponent']
+            # hardwareGroup = cvDict['hardwareGroup']
+            self.UpdateSelfCurrentVars()
 
-            #print(cvDict)
             # FILES LIKE: DUCopper_A210_Z81_1010102.root
-            if cut and configuration and detector and decayChain and segment and branchingRatio and hardwareComponent and (not hardwareGroup):
+            if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathMJDSIM + configuration + '/bulk/' + hardwareComponent + '/' + segment + '/'
                 fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
                 fullPathToFile = pathToFile + fileName
@@ -91,14 +93,29 @@ class BSManageData():
                 self.Print('  not looking for file at this level')
                 return None
 
+        def GetWritePath(self):
+            """
+            Get the full path for where to put a file. Many variants based on what weightFuncs are on or off or what level of loop you're in
+            """
+            self.UpdateSelfCurrentVars()
+
+            if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
+                pathToFile = self.basePathWrite
+                fileName = '%s_%s_%sCombined_%s' % (hardwareComponent, detector, decayChain, str(cut))
+                fullPathToFile = pathToFile + fileName
+                return fullPathToFile
+            else:
+                self.Print('  no case matching this data')
+                return None
+
         def GetData(self):
             """
             Get the file and return an object that is useable
             """
 
-            fullPathToFile = self.GetFullPath()
+            fullPathToFile = self.GetReadPath()
             if fullPathToFile != None:
                 cvDict = self.bscv.GetCurrentVarsDict()
-                return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict) #return fullPathToFile
+                return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
             else:
                 return []

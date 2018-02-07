@@ -77,18 +77,20 @@ class BSLoop():
             if bscv.GetCurrentVar('decayChain') == None: # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
                 for decayChain in bscd.GetDecayChainSegmentBranchingRatioDict():
                     bscv.SetCurrentVar('decayChain', decayChain)
-                    bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombineData instantiate for each decayChain
+                    bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each decayChain loop
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
                         bscv.SetCurrentVar(objType, obj)
-                        bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj])
+                        bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj]) # there is one branchingRatio per segment
                         self.Print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
                         data = []
                         if recur:
                             data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                         if not recur:
-                            data = bsmd.GetData() # bscDict[objType].Add(bsmd.GetData())
+                            data = bsmd.GetData() # return the data up into these loops
                         if len(data) > 0:
                             bscDict[objType].Add(data) # add data into combo for this level
+                            # bsmd.SaveFig(data)
+                        bscv.ResetCurrentVar('branchingRatio')
                     bscv.ResetCurrentVar(objType)
                     bsmd.SaveFig(bscDict[objType].GetCombinedData()) # save fig of the combo of this level
                     del bscDict[objType] # del BSCombineData instance
