@@ -50,47 +50,41 @@ class BSManageData():
             self.hardwareGroup = cvDict['hardwareGroup']
 
         def SaveFig(self, data):
+            print('  Hist integral (np.sum) =', np.sum(data))
+
             xArray = np.arange(bspr.xmin + 0.5, bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
             plt.step(xArray, data, where = 'mid', color='k')
-            plt.yscale('log')#, nonposy='clip')
+            if np.sum(data) > 0:
+                plt.yscale('log')#, nonposy='clip')
             plt.xlim(bspr.xmin, bspr.xmax)
 
-            print('  hist integral (np.sum): ', np.sum(data))
-
-            figName = self.GetWritePath() + '.pdf'
-            print('  Saving figure', figName)
-            plt.savefig(figName)
+            if self.GetWritePath() != None:
+                figName = self.GetWritePath() + '.pdf'
+                self.Print('  Saving figure', figName)
+                plt.savefig(figName)
+            else:
+                self.Print('  SaveFig: GetWritePath is None. Not saving.')
 
         def GetReadPath(self):
             """
             Get the full path to a file. Many variants based on what weightFuncs are on or off or what level of loop you're in
             """
-            # configuration, detector, decayChain, segment, branchingRatio, hardwareComponent, hardwareGroup = self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup
-            # cvDict = self.bscv.GetCurrentVarsDict()
-            # cut = cvDict['cut']
-            # configuration = cvDict['configuration']
-            # detector = cvDict['detector']
-            # decayChain = cvDict['decayChain']
-            # segment = cvDict['segment']
-            # branchingRatio = cvDict['branchingRatio']
-            # hardwareComponent = cvDict['hardwareComponent']
-            # hardwareGroup = cvDict['hardwareGroup']
             self.UpdateSelfCurrentVars()
+
+            fullPathToFile = None
 
             # FILES LIKE: DUCopper_A210_Z81_1010102.root
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathMJDSIM + self.configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
                 fileName = '%s_%s_%s.root' % (self.hardwareComponent, self.segment, self.detector)
                 fullPathToFile = pathToFile + fileName
-                if(os.path.isfile(fullPathToFile)):
-                    #self.Print('  found file', fileName)
-                    return fullPathToFile
-                else:
-                    #self.Print('  did NOT find file', fileName)
-                    return None
+
+            # RETURN
+            if(os.path.isfile(fullPathToFile)):
+                return fullPathToFile
             else:
-                self.Print('  not looking for file at this level')
+                self.Print('  GetReadPath: No case matching this data.')
                 return None
 
         def GetWritePath(self):
@@ -99,13 +93,18 @@ class BSManageData():
             """
             self.UpdateSelfCurrentVars()
 
+            fullPathToFile = None
+
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
                 fileName = '%s_%s_%sCombined_%s' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut))
                 fullPathToFile = pathToFile + fileName
+
+            # RETURN
+            if fullPathToFile != None:
                 return fullPathToFile
             else:
-                self.Print('  no case matching this data')
+                self.Print('  GetWritePath: No case matching this data.')
                 return None
 
         def GetData(self):
