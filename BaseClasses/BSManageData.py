@@ -72,7 +72,7 @@ class BSManageData():
             """
             self.UpdateSelfCurrentVars()
 
-            fullPathToFile = None
+            fullPathToFile = ''
 
             # FILES LIKE: DUCopper_A210_Z81_1010102.root
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
@@ -93,7 +93,7 @@ class BSManageData():
             """
             self.UpdateSelfCurrentVars()
 
-            fullPathToFile = None
+            fullPathToFile = ''
 
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
