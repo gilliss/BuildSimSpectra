@@ -50,9 +50,3 @@ class BSCombine():
                     if self.bscd.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
                         activeDetectorMassList.append(self.bscd.GetDetectorMassList()[i])
                 return 1/np.sum(activeDetectorMassList)
-
-
-            def make_cylinder_volume_func(r):
-    def volume(h):
-        return math.pi * r * r * h
-    return volume
