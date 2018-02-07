@@ -62,8 +62,8 @@ class BSManageData():
             if self.GetWritePath() != None:
                 if sDat == True:
                     fileName = self.GetWritePath() # numpy will automatically append .npy
-                    self.Print('  Saving data', fileName)
-                    np.save(fileName, data)
+                    self.Print('  Saving data', fileName + '.npy')
+                    np.save(fileName, data, allow_pickle = False)
                 if sFig == True:
                     fileName = self.GetWritePath() + '.pdf'
                     self.Print('  Saving figure', fileName)

@@ -89,7 +89,7 @@ class BSLoop():
                             data = bsmd.GetData() # return the data up into these loops
                         if (len(data) > 0) and (weightFunc != None):
                             bscDict[objType].Add(data) # add data into combo for this level
-                            # bsmd.Save(data, sDat = True, sFig = False) # save the intermediate hist too, not just the combo hist below
+                            bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
                         bscv.ResetCurrentVar('branchingRatio')
                     bscv.ResetCurrentVar(objType)
                     bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
