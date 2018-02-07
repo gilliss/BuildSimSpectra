@@ -12,15 +12,36 @@ class BSCombine():
             self.weightFunc = weightFunc
             self.bscv = bscv
             self.bscd = bscd
+
+            self.cut = None
+            self.configuration = None
+            self.detector = None
+            self.decayChain = None
+            self.segment = None
+            self.branchingRatio = None
+            self.hardwareComponent = None
+            self.hardwareGroup = None
+
             self.combinedData = np.zeros(10000)
             return None
+
+        def UpdateSelfCurrentVars(self):
+            cvDict = self.bscv.GetCurrentVarsDict()
+            self.cut = cvDict['cut']
+            self.configuration = cvDict['configuration']
+            self.detector = cvDict['detector']
+            self.decayChain = cvDict['decayChain']
+            self.segment = cvDict['segment']
+            self.branchingRatio = cvDict['branchingRatio']
+            self.hardwareComponent = cvDict['hardwareComponent']
+            self.hardwareGroup = cvDict['hardwareGroup']
 
         def Add(self, data):
             """
             Add 'obj' to 'into' according to weight expressed in 'comboRule'
             """
-            print('  adding current hist')
-            weight = self.GetWeight(weightFunc)
+            weight = self.GetWeight(self.weightFunc)
+            print('  Adding hist with weight ' + self.weightFunc + ' = ' + str(weight))
             self.combinedData = self.combinedData + data*weight
             return None
 
@@ -28,21 +49,13 @@ class BSCombine():
             return self.combinedData
 
         def GetWeight(self, weightFunc):
-            cvDict = self.bscv.GetCurrentVarsDict()
-            cut = cvDict['cut']
-            configuration = cvDict['configuration']
-            detector = cvDict['detector']
-            decayChain = cvDict['decayChain']
-            segment = cvDict['segment']
-            branchingRatio = cvDict['branchingRatio']
-            hardwareComponent = cvDict['hardwareComponent']
-            hardwareGroup = cvDict['hardwareGroup']
+            self.UpdateSelfCurrentVars()
 
             if weightFunc == 'One':
                 return 1
 
             if weightFunc == 'BranchingRatio':
-                return branchingRatio
+                return self.branchingRatio
 
             if weightFunc == 'TotalMass':
                 activeDetectorMassList = []
