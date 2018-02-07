@@ -80,8 +80,8 @@ class BSManageData():
 
             # FILES LIKE: DUCopper_A210_Z81_1010102.root
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
-                pathToFile = self.basePathMJDSIM + configuration + '/bulk/' + hardwareComponent + '/' + segment + '/'
-                fileName = '%s_%s_%s.root' % (hardwareComponent, segment, detector)
+                pathToFile = self.basePathMJDSIM + self.configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
+                fileName = '%s_%s_%s.root' % (self.hardwareComponent, self.segment, self.detector)
                 fullPathToFile = pathToFile + fileName
                 if(os.path.isfile(fullPathToFile)):
                     #self.Print('  found file', fileName)
@@ -101,7 +101,7 @@ class BSManageData():
 
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
-                fileName = '%s_%s_%sCombined_%s' % (hardwareComponent, detector, decayChain, str(cut))
+                fileName = '%s_%s_%sCombined_%s' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut))
                 fullPathToFile = pathToFile + fileName
                 return fullPathToFile
             else:
