@@ -71,10 +71,11 @@ class BSLoop():
                 if (data is not None):
                     bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
                     if (weightFunc != None):
+                        print('  ***Here with weightFunc', weightFunc)
                         bscDict[objType].Add(data) # add data into combo for this level
             bscv.ResetCurrentVar(objType)
             if weightFunc != None:
-                print('  ***Here with weightFunc', weightFunc)
+                print('  ***End Here with weightFunc', weightFunc)
                 return bscDict[objType].GetCombinedData()
 
         if(objType == 'decayChain'):
