@@ -68,6 +68,8 @@ class BSLoop():
                     data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 if not recur:
                     data = bsmd.GetData() # return the data up into these loops
+                    if(data is None):
+                        print('  pulled None data')
                 if (data is not None):
                     bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
                     if (weightFunc != None):
