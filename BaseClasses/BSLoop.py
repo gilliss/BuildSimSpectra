@@ -75,7 +75,7 @@ class BSLoop():
                     if (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
             bscv.ResetCurrentVar(objType)
-            if weightFunc != None:
+            if weightFunc != None and (data is not None):
                 return bscDict[objType].GetCombinedData()
 
         if(objType == 'decayChain'):
