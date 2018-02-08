@@ -98,8 +98,8 @@ class BSLoop():
                     bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each decayChain loop
                     for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain]:
                         bscv.SetCurrentVar(objType, obj)
-                        bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj]) # there is one branchingRatio per segment
-                        self.Print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
+                        bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj]) # setting current branchingRatio var to the branching ratio for this segment
+                        self.Print(objType, decayChain, bscv.GetCurrentVar('segment'), bscv.GetCurrentVar('branchingRatio'))
                         if recur:
                             data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur) # perform sub-loop and return combinedData # data will be a global var relative to the For() method
                         if not recur:
@@ -118,7 +118,7 @@ class BSLoop():
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
                     bscv.SetCurrentVar(objType, obj)
                     bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')][obj])
-                    self.Print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('branchingRatio'))
+                    self.Print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('segment'), bscv.GetCurrentVar('branchingRatio'))
                     if recur:
                         data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                     if not recur:
