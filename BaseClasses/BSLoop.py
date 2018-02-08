@@ -15,6 +15,8 @@ bsmd = BSManageData.BSManageData(bscv) # bsmd needs the bscv object passed into 
 import BaseClasses.BSCombine as BSCombine
 bscDict = {}
 
+#import numpy as np # needed for lines like (data is not None)
+
 class BSLoop():
     """
     Functions to handle nested loops over different types. Loops could be nested in any order.
@@ -66,7 +68,7 @@ class BSLoop():
                     data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 if not recur:
                     data = bsmd.GetData() # return the data up into these loops
-                if (data != None):
+                if (data is not None):
                     bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
                     if (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
@@ -83,7 +85,7 @@ class BSLoop():
                     data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 if not recur:
                     data = bsmd.GetData() # return the data up into these loops
-                if (data != None):
+                if (data is not None):
                     bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
                     if (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
@@ -104,7 +106,7 @@ class BSLoop():
             #                 data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
             #             if not recur:
             #                 data = bsmd.GetData() # return the data up into these loops
-            #             if (data != None):
+            #             if (data is not None):
             #                 bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
             #                 if (weightFunc != None):
             #                     bscDict[objType].Add(data) # add data into combo for this level
@@ -124,7 +126,7 @@ class BSLoop():
                         data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                     if not recur:
                         data = bsmd.GetData() # return the data up into these loops
-                    if (data != None):
+                    if (data is not None):
                         bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
                         if (weightFunc != None):
                             bscDict[objType].Add(data) # add data into combo for this level
@@ -160,7 +162,7 @@ class BSLoop():
                     data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 if not recur:
                     data = bsmd.GetData() # return the data up into these loops
-                if (data != None):
+                if (data is not None):
                     bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
                     if (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
