@@ -82,9 +82,8 @@ class BSLoop():
                         bscv.SetCurrentVar(objType, obj)
                         bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[decayChain][obj]) # there is one branchingRatio per segment
                         self.Print(objType, decayChain, bscv.GetCurrentVar('branchingRatio'))
-                        data = []
                         if recur:
-                            data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur) # perform sub-loop and return combinedData
+                            data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur) # perform sub-loop and return combinedData # data will be a global var relative to the For() method
                         if not recur:
                             data = bsmd.GetData() # return the data up into these loops
                         if (len(data) > 0) and (weightFunc != None):
@@ -103,7 +102,6 @@ class BSLoop():
                     bscv.SetCurrentVar(objType, obj)
                     bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')][obj])
                     self.Print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('branchingRatio'))
-                    data = []
                     if recur:
                         data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                     if not recur:
@@ -114,7 +112,7 @@ class BSLoop():
                     # del data or data = [] needed here?
                 bscv.ResetCurrentVar(objType)
                 bscv.ResetCurrentVar('branchingRatio')
-                if weightFunc != None:
+                if weightFunc != None: # note that this block comes AFTER reseting current vars. This is so that the current vars represent the COMBO hist
                     bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
                 #del bscDict[objType] # del BSCombineData instance
                 return bscDict[objType].GetCombinedData()
@@ -124,7 +122,6 @@ class BSLoop():
             for obj in bscd.GetHardwareComponentList():
                 bscv.SetCurrentVar(objType, obj)
                 self.Print(objType, bscv.GetCurrentVar(objType))
-                data = []
                 if recur:
                     data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 if not recur:
