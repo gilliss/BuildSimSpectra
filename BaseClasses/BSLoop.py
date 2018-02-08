@@ -52,26 +52,43 @@ class BSLoop():
             r_recur = recur['r_recur'] #print('recur args:',r_objType, r_weightFunc, r_recur)
 
         if(objType == 'detector'):
+            # MAKE activeDetectorSNList # I should make this an object in the ConfigData file ...
             activeDetectorSNList = []
             for i in range(len(bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')])):
                 if bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')][i] == 1:
                     activeDetectorSNList.append(bscd.GetDetectorList()[i])
+            # LOOP OVER DETECTORS
             for obj in activeDetectorSNList: #bscd.GetDetectorList():
                 bscv.SetCurrentVar(objType, obj)
-                self.Print(objType, bscv.GetCurrentVar(objType))
+                self.Print(objType, bscv.GetCurrentVar(objType)) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
                 if recur:
-                    self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsmd.GetData() # This syntax could be simplified with a BSCurrent.py class to hold the current var vals. bsmd would have access to BSCurrentVars
-            bscv.ResetCurrentVar(objType) # This syntax could be simplified to BSCurrentVars.ResetVar(objType)
+                    data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
+                if not recur:
+                    data = bsmd.GetData() # return the data up into these loops
+                if (len(data) > 0) and (weightFunc != None):
+                    bscDict[objType].Add(data) # add data into combo for this level
+                    bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
+            bscv.ResetCurrentVar(objType)
+            if weightFunc != None:
+                bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
+            return bscDict[objType].GetCombinedData()
 
         if(objType == 'decayChain'):
+            bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
             for obj in bscd.GetDecayChainList():
                 bscv.SetCurrentVar(objType, obj)
                 self.Print(objType, bscv.GetCurrentVar(objType)) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
                 if recur:
-                    self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsmd.GetData()
+                    data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
+                if not recur:
+                    data = bsmd.GetData() # return the data up into these loops
+                if (len(data) > 0) and (weightFunc != None):
+                    bscDict[objType].Add(data) # add data into combo for this level
+                    bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
             bscv.ResetCurrentVar(objType)
+            if weightFunc != None:
+                bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
+            return bscDict[objType].GetCombinedData()
 
         if(objType == 'segment'):
             if bscv.GetCurrentVar('decayChain') == None: # This block obviates the need to separately specify looping over decayChain and segment. This block essentially does both. # This block avoids setting currentDecayChain. Must use the segment-only syntax in the macro
@@ -93,7 +110,6 @@ class BSLoop():
                     bscv.ResetCurrentVar(objType)
                     if weightFunc != None:
                         bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
-                    #del bscDict[objType] # del BSCombineData instance # probably unecessary, since overwrite at start of loop anyway
                     bscv.ResetCurrentVar('decayChain')
                     return bscDict[objType].GetCombinedData()
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
@@ -109,12 +125,10 @@ class BSLoop():
                     if (len(data) > 0) and (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
                         bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
-                    # del data or data = [] needed here?
                 bscv.ResetCurrentVar(objType)
                 bscv.ResetCurrentVar('branchingRatio')
                 if weightFunc != None: # note that this block comes AFTER reseting current vars. This is so that the current vars represent the COMBO hist
                     bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
-                #del bscDict[objType] # del BSCombineData instance
                 return bscDict[objType].GetCombinedData()
 
         if(objType == 'hardwareComponent'):
@@ -132,7 +146,6 @@ class BSLoop():
             bscv.ResetCurrentVar(objType)
             if weightFunc != None:
                 bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
-            #del bscDict[objType] # del BSCombineData instance
             return bscDict[objType].GetCombinedData()
 
         return None
