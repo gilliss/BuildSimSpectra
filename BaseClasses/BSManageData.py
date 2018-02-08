@@ -50,7 +50,7 @@ class BSManageData():
             self.hardwareGroup = cvDict['hardwareGroup']
 
         def Save(self, data, sDat, sFig):
-            print('  Hist integral np.sum(data) =', np.sum(data))
+            #debug: #print('  Hist integral np.sum(data) =', np.sum(data))
 
             xArray = np.arange(bspr.xmin + 0.5, bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
 
@@ -80,10 +80,22 @@ class BSManageData():
 
             fullPathToFile = ''
 
-            # FILES LIKE: DUCopper_A210_Z81_1010102.root
+            # base files: basePathMJDSIM (mjdsim: hardwareComponent_segment_detector.root, e.g. DUCopper_A210_Z81_1010102)
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathMJDSIM + self.configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
                 fileName = '%s_%s_%s.root' % (self.hardwareComponent, self.segment, self.detector)
+                fullPathToFile = pathToFile + fileName
+
+            # base files: basePathWrite hardwareComponent_segment_detector_cut.npy (mjdsim: hardwareComponent_segment_detector.root)
+            # if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
+            #     pathToFile = self.basePathWrite
+            #     fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.segment, self.detector, str(self.cut))
+            #     fullPathToFile = pathToFile + fileName
+
+            # hardwareComponent_detector_decayChain_cut_configuration.npy (mjdsim: hardwareComponent_detector_decayChainCombined.root)
+            if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
+                pathToFile = self.basePathWrite
+                fileName = '%s_%s_%s_%s_%s' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
             # RETURN
@@ -107,13 +119,13 @@ class BSManageData():
                 fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.segment, self.detector, str(self.cut))
                 fullPathToFile = pathToFile + fileName
 
-            # hardwareComponent_detector_decayChain (mjdsim: hardwareComponent_detector_decayChainCombined)
+            # hardwareComponent_detector_decayChain_cut_configuration (mjdsim: hardwareComponent_detector_decayChainCombined)
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
                 fileName = '%s_%s_%s_%s_%s' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
-            # hardwareComponent_decayChain (mjdsim: hardwareComponent_MJD_decayChainCombined)
+            # hardwareComponent_decayChain_cut_configuration (mjdsim: hardwareComponent_MJD_decayChainCombined)
             if self.cut and self.configuration and (not self.detector) and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
                 fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.decayChain, str(self.cut), self.configuration)

@@ -46,6 +46,7 @@ class BSCombine():
             return None
 
         def GetCombinedData(self):
+            print('  np.sum(combinedData) =', np.sum(self.combinedData))
             return self.combinedData
 
         def GetWeight(self, weightFunc):

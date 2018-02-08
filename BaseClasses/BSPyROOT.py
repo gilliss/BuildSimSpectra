@@ -45,8 +45,8 @@ class BSPyROOT():
         if h.GetEntries() > 0:
             print('  Working with:', h.GetName(), h.GetTitle(), h.GetNbinsX(), h.GetEntries(), h.Integral())
             hArray = np.frombuffer(h.GetArray(), dtype = 'float', count = self.nBinsX, offset = 0) # getting array of data from PyDoubleBuffer object
-        else:
-            print('  0 entries. Perhaps 0 MC hits? Returning hArray = zeros.')
+        #debug: #else:
+            #debug: #print('  0 entries. Perhaps 0 MC hits? Returning hArray = zeros.')
 
             # PLOTTING
             # xArray = np.arange(self.xmin + 0.5, self.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
@@ -64,7 +64,7 @@ class BSPyROOT():
         del c
         del h
 
-        print('  Does np.sum(hArray) match h.Integral()? =', np.sum(hArray))
+        #debug: #print('  Does np.sum(hArray) match h.Integral()? =', np.sum(hArray))
         return hArray
 
 # NOTES
