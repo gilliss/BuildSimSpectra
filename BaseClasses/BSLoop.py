@@ -94,8 +94,9 @@ class BSLoop():
                     bscv.ResetCurrentVar(objType)
                     if weightFunc != None:
                         bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
-                    del bscDict[objType] # del BSCombineData instance
+                    #del bscDict[objType] # del BSCombineData instance # probably unecessary, since overwrite at start of loop anyway
                     bscv.ResetCurrentVar('decayChain')
+                    return bscDict[objType].GetCombinedData()
             else: # This block is called if decayChain and segment are explicity looped over separately in the macro
                 bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
                 for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
@@ -110,12 +111,13 @@ class BSLoop():
                     if (len(data) > 0) and (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
                         bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
-                    # del data or data = [] needed here? 
+                    # del data or data = [] needed here?
                 bscv.ResetCurrentVar(objType)
                 bscv.ResetCurrentVar('branchingRatio')
                 if weightFunc != None:
                     bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
-                del bscDict[objType] # del BSCombineData instance
+                #del bscDict[objType] # del BSCombineData instance
+                return bscDict[objType].GetCombinedData()
 
         if(objType == 'hardwareComponent'):
             bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
@@ -133,7 +135,8 @@ class BSLoop():
             bscv.ResetCurrentVar(objType)
             if weightFunc != None:
                 bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
-            del bscDict[objType] # del BSCombineData instance
+            #del bscDict[objType] # del BSCombineData instance
+            return bscDict[objType].GetCombinedData()
 
         return None
 
