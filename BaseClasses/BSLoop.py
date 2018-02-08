@@ -110,6 +110,7 @@ class BSLoop():
                     if (len(data) > 0) and (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
                         bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
+                    # del data or data = [] needed here? 
                 bscv.ResetCurrentVar(objType)
                 bscv.ResetCurrentVar('branchingRatio')
                 if weightFunc != None:
@@ -117,13 +118,22 @@ class BSLoop():
                 del bscDict[objType] # del BSCombineData instance
 
         if(objType == 'hardwareComponent'):
+            bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
             for obj in bscd.GetHardwareComponentList():
                 bscv.SetCurrentVar(objType, obj)
                 self.Print(objType, bscv.GetCurrentVar(objType))
+                data = []
                 if recur:
-                    self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-                bsmd.GetData()
+                    data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
+                if not recur:
+                    data = bsmd.GetData() # return the data up into these loops
+                if (len(data) > 0) and (weightFunc != None):
+                    bscDict[objType].Add(data) # add data into combo for this level
+                    bsmd.Save(data, sDat = True, sFig = True) # save the intermediate hist
             bscv.ResetCurrentVar(objType)
+            if weightFunc != None:
+                bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
+            del bscDict[objType] # del BSCombineData instance
 
         return None
 

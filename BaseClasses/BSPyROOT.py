@@ -64,6 +64,7 @@ class BSPyROOT():
         del c
         del h
 
+        print('  Does np.sum(hArray) match h.Integral()? =', np.sum(hArray))
         return hArray
 
 # NOTES
