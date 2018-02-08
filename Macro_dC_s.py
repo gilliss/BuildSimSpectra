@@ -20,4 +20,4 @@ recurDecayChain = {'r_objType': 'decayChain', 'r_weightFunc': None, 'r_recur': r
 # third lowest level of recursion
 recurHardwareComponent = {'r_objType': 'hardwareComponent', 'r_weightFunc': None, 'r_recur': recurDecayChain}
 # top level of recursion
-bslp.For(objType = 'detector', weightFunc = 'TotalMass', **recurHardwareComponent)
+bslp.For(objType = 'detector', weightFunc = None, **recurHardwareComponent)
