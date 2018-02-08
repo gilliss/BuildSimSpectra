@@ -114,6 +114,7 @@ class BSLoop():
                 bscv.ResetCurrentVar('branchingRatio')
                 if weightFunc != None:
                     bsmd.Save(bscDict[objType].GetCombinedData(), sDat = True, sFig = True) # save fig of the combo of this level
+                del bscDict[objType] # del BSCombineData instance
 
         if(objType == 'hardwareComponent'):
             for obj in bscd.GetHardwareComponentList():
