@@ -58,6 +58,7 @@ class BSLoop():
                 if bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')][i] == 1:
                     activeDetectorSNList.append(bscd.GetDetectorList()[i])
             # LOOP OVER DETECTORS
+            bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
             for obj in activeDetectorSNList: #bscd.GetDetectorList():
                 bscv.SetCurrentVar(objType, obj)
                 self.Print(objType, bscv.GetCurrentVar(objType)) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
