@@ -43,7 +43,7 @@ class BSPyROOT():
 
         hArray = np.zeros(self.nBinsX)
         if h.GetEntries() > 0:
-            print('  Working with:', h.GetName(), h.GetTitle(), h.GetNbinsX(), h.GetEntries(), h.Integral())
+            print('  Working with:', h.GetName(), h.GetTitle(), h.GetNbinsX(), h.GetEntries(), h.Integral()) #  debug
             hArray = np.frombuffer(h.GetArray(), dtype = 'float', count = self.nBinsX, offset = 0) # getting array of data from PyDoubleBuffer object
         #debug: #else:
             #debug: #print('  0 entries. Perhaps 0 MC hits? Returning hArray = zeros.')
