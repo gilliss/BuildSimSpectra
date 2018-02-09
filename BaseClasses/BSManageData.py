@@ -155,5 +155,7 @@ class BSManageData():
                 cvDict = self.bscv.GetCurrentVarsDict()
                 if self.basePathMJDSIM in fullPathToFile:
                     return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
+                if self.basePathWrite in fullPathToFile:
+                    return np.load(fullPathToFile)
             else:
                 return None
