@@ -156,6 +156,7 @@ class BSManageData():
                 if self.basePathMJDSIM in fullPathToFile:
                     return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
                 if self.basePathWrite in fullPathToFile:
+                    print('  Working with: np.sum() =', np.sum(np.load(fullPathToFile)))
                     return np.load(fullPathToFile)
             else:
                 return None
