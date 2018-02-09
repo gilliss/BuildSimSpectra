@@ -19,10 +19,17 @@ class BSConfigData():
         return cfgd.detectorMassList
     def GetEnrichedDetectorList(self):
         return cfgd.enrichedDetectorList
+
     def GetDecayChainList(self):
         return cfgd.decayChainList
     def GetDecayChainSegmentBranchingRatioDict(self):
         return cfgd.decayChainSegmentBranchingRatioDict
+        
+    def GetHardwareComponentDict(self):
+        """
+        Get the dict of hardwareComponents and their corresponding materials, masses, activations, activities
+        """
+        return cfgd.hardwareComponentDict
     def GetHardwareComponentList(self):
         return cfgd.hardwareComponentList
 

@@ -10,8 +10,8 @@ class BSCombine():
         """
         def __init__(self, weightFunc, bscv, bscd):
             self.weightFunc = weightFunc
-            self.bscv = bscv
-            self.bscd = bscd
+            self.bscv = bscv # The global BSCurrentVars object
+            self.bscd = bscd # The BSConfigData object
 
             self.cut = None
             self.configuration = None
@@ -62,5 +62,13 @@ class BSCombine():
                     if self.bscd.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
                         activeDetectorMassList.append(self.bscd.GetDetectorMassList()[i])
                 return 1/np.sum(activeDetectorMassList)
+            elif weightFunc == 'ActivityPerDetector':
+                dCActStr = self.bscv.GetCurrentVar('decayChain') + 'Activity'
+                hwCStr = self.bscv.GetCurrentVar('hardwareComponent')
+                dStr = self.bscv.GetCurrentVar('detector')
+                dIndex = self.bscv.GetDetectorList.index(dstr)
+                dMass = self.bscv.GetDetectorMassList[dIndex]
+                activity_hwC_dC = self.bscd.GetHardwareComponentDict()[hwCStr][dCActStr][0]
+                return (activity_hwC_dC * self.bscd.secs_per_year)/dMass
             else:
                 print('  GetWeight: weightFunc not recognized')
