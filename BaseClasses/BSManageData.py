@@ -92,17 +92,17 @@ class BSManageData():
             #     fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.segment, self.detector, str(self.cut))
             #     fullPathToFile = pathToFile + fileName
 
-            print('  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
+            #debug #print('  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
             # hardwareComponent_detector_decayChain_cut_configuration.npy (mjdsim: hardwareComponent_detector_decayChainCombined.root)
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
-                fileName = '%s_%s_%s_%s_%s' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut), self.configuration)
+                fileName = '%s_%s_%s_%s_%s.npy' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
             # hardwareComponent_decayChain_cut_configuration (mjdsim: hardwareComponent_MJD_decayChainCombined)
             if self.cut and self.configuration and (not self.detector) and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
-                fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.decayChain, str(self.cut), self.configuration)
+                fileName = '%s_%s_%s_%s.npy' % (self.hardwareComponent, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
             # RETURN
