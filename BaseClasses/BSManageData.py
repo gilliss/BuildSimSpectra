@@ -98,6 +98,12 @@ class BSManageData():
                 fileName = '%s_%s_%s_%s_%s' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
+            # hardwareComponent_decayChain_cut_configuration (mjdsim: hardwareComponent_MJD_decayChainCombined)
+            if self.cut and self.configuration and (not self.detector) and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
+                pathToFile = self.basePathWrite
+                fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.decayChain, str(self.cut), self.configuration)
+                fullPathToFile = pathToFile + fileName
+
             # RETURN
             if(os.path.isfile(fullPathToFile)):
                 return fullPathToFile

@@ -68,8 +68,6 @@ class BSLoop():
                     data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
                 if not recur:
                     data = bsmd.GetData() # return the data up into these loops
-                    if(data is None):
-                        print('  pulled None data')
                 if (data is not None):
                     bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
                     if (weightFunc != None):
@@ -92,7 +90,7 @@ class BSLoop():
                     if (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
             bscv.ResetCurrentVar(objType)
-            if weightFunc != None:
+            if weightFunc != None and (data is not None):
                 return bscDict[objType].GetCombinedData()
 
         if(objType == 'segment'):
@@ -134,7 +132,7 @@ class BSLoop():
                             bscDict[objType].Add(data) # add data into combo for this level
                 bscv.ResetCurrentVar(objType)
                 bscv.ResetCurrentVar('branchingRatio')
-                if weightFunc != None: # note that this block comes AFTER reseting current vars. This is so that the current vars represent the COMBO hist
+                if weightFunc != None and (data is not None): # note that this block comes AFTER reseting current vars. This is so that the current vars represent the COMBO hist
                     return bscDict[objType].GetCombinedData()
 
         # if(objType == 'hardwareComponent'):
@@ -169,7 +167,7 @@ class BSLoop():
                     if (weightFunc != None):
                         bscDict[objType].Add(data) # add data into combo for this level
             bscv.ResetCurrentVar(objType)
-            if weightFunc != None:
+            if weightFunc != None and (data is not None):
                 return bscDict[objType].GetCombinedData()
 
         return None
