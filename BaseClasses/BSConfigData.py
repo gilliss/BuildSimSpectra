@@ -24,7 +24,12 @@ class BSConfigData():
         return cfgd.decayChainList
     def GetDecayChainSegmentBranchingRatioDict(self):
         return cfgd.decayChainSegmentBranchingRatioDict
-        
+
+    def GetSecsPerYear(self):
+        """
+        Constant converting from seconds to years
+        """
+        return cfgd.secs_per_year
     def GetHardwareComponentDict(self):
         """
         Get the dict of hardwareComponents and their corresponding materials, masses, activations, activities

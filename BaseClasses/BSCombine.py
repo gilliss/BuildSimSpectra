@@ -69,6 +69,7 @@ class BSCombine():
                 dIndex = self.bscd.GetDetectorList().index(dStr)
                 dMass = self.bscd.GetDetectorMassList()[dIndex]
                 activity_hwC_dC = self.bscd.GetHardwareComponentDict()[hwCStr][dCActStr][0]
-                return (activity_hwC_dC * self.bscd.secs_per_year)/dMass
+                secs_per_year = self.bscd.GetSecsPerYear()
+                return (activity_hwC_dC * secs_per_year)/dMass
             else:
                 print('  GetWeight: weightFunc not recognized')
