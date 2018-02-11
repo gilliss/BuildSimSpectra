@@ -66,8 +66,8 @@ class BSCombine():
                 dCActStr = self.bscv.GetCurrentVar('decayChain') + 'Activity'
                 hwCStr = self.bscv.GetCurrentVar('hardwareComponent')
                 dStr = self.bscv.GetCurrentVar('detector')
-                dIndex = self.bscv.GetDetectorList.index(dstr)
-                dMass = self.bscv.GetDetectorMassList[dIndex]
+                dIndex = self.bscd.GetDetectorList.index(dstr)
+                dMass = self.bscd.GetDetectorMassList[dIndex]
                 activity_hwC_dC = self.bscd.GetHardwareComponentDict()[hwCStr][dCActStr][0]
                 return (activity_hwC_dC * self.bscd.secs_per_year)/dMass
             else:
