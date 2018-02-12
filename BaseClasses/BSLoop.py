@@ -15,8 +15,6 @@ bsmd = BSManageData.BSManageData(bscv) # bsmd needs the bscv object passed into 
 import BaseClasses.BSCombine as BSCombine
 bscDict = {}
 
-#import numpy as np # needed for lines like (data is not None)
-
 class BSLoop():
     """
     Functions to handle nested loops over different types. Loops could be nested in any order.
