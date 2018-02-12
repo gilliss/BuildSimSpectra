@@ -119,7 +119,7 @@ class BSManageData():
             """
             self.UpdateSelfCurrentVars()
 
-            print('  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
+            #debug #print('  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
 
             fullPathToFile = ''
 
