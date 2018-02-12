@@ -80,6 +80,8 @@ class BSManageData():
 
             fullPathToFile = ''
 
+            #debug #print('  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
+
             # base files: basePathMJDSIM (mjdsim: hardwareComponent_segment_detector.root, e.g. DUCopper_A210_Z81_1010102)
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathMJDSIM + self.configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
@@ -92,7 +94,6 @@ class BSManageData():
             #     fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.segment, self.detector, str(self.cut))
             #     fullPathToFile = pathToFile + fileName
 
-            #debug #print('  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
             # hardwareComponent_detector_decayChain_cut_configuration.npy (mjdsim: hardwareComponent_detector_decayChainCombined.root)
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathWrite
@@ -138,8 +139,14 @@ class BSManageData():
                 fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
+            # detector_decayChain_cut_configuration (mjdsim: detector_decayChainCombined)
+            # if self.cut and self.configuration and self.detector and (not self.decayChain) and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
+            #     pathToFile = self.basePathWrite
+            #     fileName = '%s_%s_%s_%s' % (self.detector, self.decayChain, str(self.cut), self.configuration)
+            #     fullPathToFile = pathToFile + fileName
+
             # RETURN
-            if fullPathToFile != None:
+            if fullPathToFile != '':
                 return fullPathToFile
             else:
                 self.Print('  GetWritePath: No case matching this data.')
