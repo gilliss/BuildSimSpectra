@@ -92,7 +92,13 @@ class BSConfigData():
         """
         return cfgd.hardwareComponentDict
     def GetHardwareComponentList(self):
-        return cfgd.hardwareComponentList
+        """
+        Simple list of hardwareComponents to loop over
+        """
+        hardwareComponentList = []
+        for obj in self.GetHardwareComponentDict():
+            hardwareComponentList.append(obj)
+        return hardwareComponentList
 
 if __name__ == '__main__':
     BSConfigData()

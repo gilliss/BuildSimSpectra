@@ -165,14 +165,16 @@ class BSManageData():
             """
             #debug: #print('  Hist integral np.sum(data) =', np.sum(data))
 
-            xArray = np.arange(bspr.xmin + 0.5, bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
+            # MAKE THE PLOT
+            if sFig == True:
+                xArray = np.arange(bspr.xmin + 0.5, bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
+                plt.clf() # clear current figure to prevent any previous figures or axes from persisting
+                plt.step(xArray, data, where = 'mid', color='k')
+                if np.sum(data) > 0:
+                    plt.yscale('log')#, nonposy='clip')
+                plt.xlim(bspr.xmin, bspr.xmax)
 
-            plt.clf() # clear current figure to prevent any previous figures or axes from persisting
-            plt.step(xArray, data, where = 'mid', color='k')
-            if np.sum(data) > 0:
-                plt.yscale('log')#, nonposy='clip')
-            plt.xlim(bspr.xmin, bspr.xmax)
-
+            # DO THE SAVING
             fileName = self.GetWritePath()
             if self.GetWritePath() != None:
                 if sDat == True:
