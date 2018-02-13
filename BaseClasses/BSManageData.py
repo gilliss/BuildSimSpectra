@@ -169,7 +169,7 @@ class BSManageData():
             if sFig == True:
                 xArray = np.arange(bspr.xmin + 0.5, bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
                 plt.clf() # clear current figure to prevent any previous figures or axes from persisting
-                plt.step(xArray, data, where = 'mid', color='k')
+                plt.step(xArray, data, where = 'mid', color = self.GetColor())
                 if np.sum(data) > 0:
                     plt.yscale('log')#, nonposy='clip')
                 plt.xlim(bspr.xmin, bspr.xmax)
@@ -193,3 +193,20 @@ class BSManageData():
                         plt.savefig(fileName)
             else:
                 self.Print('  Save: GetWritePath is None. Not saving.')
+
+        def GetColor(self):
+            """
+            Get the color for a plot based on the current decayChain var
+            """
+            self.UpdateSelfCurrentVars()
+            colorDict = {
+                                    'Th': 'tab:brown',
+                                    'U': 'tab:green',
+                                    'Rn': 'tab:red',
+                                    'Pb': 'tab:orange',
+                                    'Co': 'tab:blue',
+                                    'K': 'tab:olive',
+                                    '0v': 'tab:gray',
+                                    '2v': 'tab:gray'
+                                    }
+            return colorDict[self.decayChain]
