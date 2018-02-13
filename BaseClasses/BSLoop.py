@@ -18,7 +18,7 @@ bscDict = {}
 class BSLoop():
     """
     Functions to handle nested loops over different types. Loops could be nested in any order.
-    Types: ['detector', 'hardwareComponent', 'decayChain', 'decayChainSegment', 'hardwareGroup', 'configuration', 'cut']
+    Types: ['detector', 'hardwareComponent', 'decayChain', 'segment', 'hardwareGroup', 'configuration', 'cut']
     """
     def __init__(self):
         print('Remember to set configuration and cut, and use desired recursion/looping routine with desired weightFuncs set')
@@ -59,107 +59,40 @@ class BSLoop():
         objType = detector, hardwareComponent, decayChain, segment
         weightFunc = info for weighting hist in a combination
         recur = a dict of args for the next layer of recursion
+
+        Notes on current implementation:
+        -You only pull .npy or .root data if you don’t recur (that is, if you’re at the top of the LIFO recursion stack). Otherwise, data gets returned up into your loop.
+        -You only save if you pull non-null data (not desired: current implementation resaves .npy data that get pulled)
+        -You only return data to the next loop up if the MOST RECENT pulled data is not None. This could be more robust
+        -You only combine data if the pulled data is not None and the weightFunc is set
+        -By pull, I mean bsmd.GetData()
         """
         if recur:
             r_objType = recur['r_objType']
             r_weightFunc = recur['r_weightFunc']
-            r_recur = recur['r_recur'] #print('recur args:',r_objType, r_weightFunc, r_recur)
+            r_recur = recur['r_recur'] #debug #print('recur args:', r_objType, r_weightFunc, r_recur)
 
         bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
-        for obj in self.GetBSCDList(objType):
-            bscv.SetCurrentVar(objType, obj)
+        for obj in self.GetBSCDList(objType): # loop over the objs of this objType
+            bscv.SetCurrentVar(objType, obj) # set the current var for this objType. Informs the paths to files, the data pulled for weighting functions, etc.
             if objType == 'segment': # could remove this special case if branchingRatio was treated as its own loop
                 bscv.SetCurrentVar('branchingRatio', self.GetBSCDList(objType)[obj])
             self.Print(objType, bscv.GetCurrentVar(objType))
             if recur:
-                data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
+                data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur) # enter deeper level of recursion and return the results back up into this loop
             if not recur:
                 data = bsmd.GetData() # return the data from lower level of recursion up into this loop
             if (data is not None):
                 bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
                 if (weightFunc != None):
                     bscDict[objType].Add(data) # add data into combo for this level
-        bscv.ResetCurrentVar(objType)
+        bscv.ResetCurrentVar(objType) # erase the current var for this objType since we are exiting the level of recursion owned by this objType.
         if objType == 'segment': # could remove this special case if branchingRatio was treated as its own loop
             bscv.ResetCurrentVar('branchingRatio')
         if weightFunc != None and (data is not None):
-            return bscDict[objType].GetCombinedData()
+            return bscDict[objType].GetCombinedData() # return the weight-combined histogram
 
         return None # return None if not doing any combining at this level (i.e. no data or weightFunc)
-
-        # if(objType == 'detector'):
-        #     # MAKE activeDetectorSNList # I should make this an object in the ConfigData file ...
-        #     activeDetectorSNList = bscd.GetActiveDetectorSNList()
-        #     # LOOP OVER DETECTORS
-        #     bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
-        #     for obj in activeDetectorSNList: #bscd.GetDetectorList():
-        #         bscv.SetCurrentVar(objType, obj)
-        #         self.Print(objType, bscv.GetCurrentVar(objType)) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
-        #         if recur:
-        #             data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-        #         if not recur:
-        #             data = bsmd.GetData() # return the data up into these loops
-        #         if (data is not None):
-        #             bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
-        #             if (weightFunc != None):
-        #                 bscDict[objType].Add(data) # add data into combo for this level
-        #     bscv.ResetCurrentVar(objType)
-        #     if weightFunc != None and (data is not None):
-        #         return bscDict[objType].GetCombinedData()
-
-        # if(objType == 'decayChain'):
-        #     bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
-        #     for obj in bscd.GetDecayChainList():
-        #         bscv.SetCurrentVar(objType, obj)
-        #         self.Print(objType, bscv.GetCurrentVar(objType)) # Can comment this out if also looping over segment b/c currentDecayChain is also printed in the segment block
-        #         if recur:
-        #             data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-        #         if not recur:
-        #             data = bsmd.GetData() # return the data up into these loops
-        #         if (data is not None):
-        #             bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
-        #             if (weightFunc != None):
-        #                 bscDict[objType].Add(data) # add data into combo for this level
-        #     bscv.ResetCurrentVar(objType)
-        #     if weightFunc != None and (data is not None):
-        #         return bscDict[objType].GetCombinedData()
-
-        # if(objType == 'segment'):
-        #         bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
-        #         for obj in bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]:
-        #             bscv.SetCurrentVar(objType, obj)
-        #             bscv.SetCurrentVar('branchingRatio', bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')][obj])
-        #             self.Print(objType, bscv.GetCurrentVar('decayChain'), bscv.GetCurrentVar('segment'), bscv.GetCurrentVar('branchingRatio'))
-        #             if recur:
-        #                 data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-        #             if not recur:
-        #                 data = bsmd.GetData() # return the data up into these loops
-        #             if (data is not None):
-        #                 bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
-        #                 if (weightFunc != None):
-        #                     bscDict[objType].Add(data) # add data into combo for this level
-        #         bscv.ResetCurrentVar(objType)
-        #         bscv.ResetCurrentVar('branchingRatio')
-        #         if weightFunc != None and (data is not None): # note that this block comes AFTER reseting current vars. This is so that the current vars represent the COMBO hist
-        #             return bscDict[objType].GetCombinedData()
-
-        # if(objType == 'hardwareComponent'):
-        #     bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
-        #     for obj in bscd.GetHardwareComponentList():
-        #         bscv.SetCurrentVar(objType, obj)
-        #         self.Print(objType, bscv.GetCurrentVar(objType))
-        #         if recur:
-        #             data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur)
-        #         if not recur:
-        #             data = bsmd.GetData() # return the data up into these loops
-        #         if (data is not None):
-        #             bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
-        #             if (weightFunc != None):
-        #                 bscDict[objType].Add(data) # add data into combo for this level
-        #     bscv.ResetCurrentVar(objType)
-        #     if weightFunc != None and (data is not None):
-        #         return bscDict[objType].GetCombinedData()
-
 
 if __name__ == '__main__':
     BSLoop()
