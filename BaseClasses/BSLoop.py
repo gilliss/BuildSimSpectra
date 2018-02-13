@@ -53,7 +53,7 @@ class BSLoop():
 
         if(objType == 'detector'):
             # MAKE activeDetectorSNList # I should make this an object in the ConfigData file ...
-            activeDetectorSNList = bscd.GetActiveDetectorSNList
+            activeDetectorSNList = bscd.GetActiveDetectorSNList()
             # LOOP OVER DETECTORS
             bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
             for obj in activeDetectorSNList: #bscd.GetDetectorList():

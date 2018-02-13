@@ -57,7 +57,7 @@ class BSCombine():
             elif weightFunc == 'BranchingRatio':
                 return self.branchingRatio
             elif weightFunc == 'TotalMass':
-                activeDetectorMassList = self.bscd.GetActiveDetectorMassList
+                activeDetectorMassList = self.bscd.GetActiveDetectorMassList()
                 return 1/np.sum(activeDetectorMassList)
             elif weightFunc == 'ActivityPerDetector':
                 dCActStr = self.bscv.GetCurrentVar('decayChain') + 'Activity'
