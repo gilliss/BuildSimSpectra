@@ -55,18 +55,24 @@ class BSCombine():
             if weightFunc == 'One':
                 return 1
             elif weightFunc == 'BranchingRatio':
-                return self.branchingRatio
+                return self.branchingRatio # (unitless, decays / decays)
             elif weightFunc == 'TotalMass':
-                activeDetectorMassList = self.bscd.GetActiveDetectorMassList()
-                return 1/np.sum(activeDetectorMassList)
-            elif weightFunc == 'ActivityPerDetector':
+                tMass = np.sum(self.bscd.GetActiveDetectorMassList())
+                return 1/tMass # (1 / kg)
+            elif weightFunc == 'ActivityPerDetectorMass':
                 dCActStr = self.bscv.GetCurrentVar('decayChain') + 'Activity'
                 hwCStr = self.bscv.GetCurrentVar('hardwareComponent')
                 dStr = self.bscv.GetCurrentVar('detector')
-                dIndex = self.bscd.GetDetectorList().index(dStr)
-                dMass = self.bscd.GetDetectorMassList()[dIndex]
+                dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # dIndex = self.bscd.GetDetectorList().index(dStr)
+                dMass = self.bscd.GetActiveDetectorMassList()[dIndex] # dMass = self.bscd.GetDetectorMassList()[dIndex]
                 activity_hwC_dC = self.bscd.GetHardwareComponentDict()[hwCStr][dCActStr][0]
                 secs_per_year = self.bscd.GetSecsPerYear()
-                return (activity_hwC_dC * secs_per_year)/dMass
+                return (activity_hwC_dC * secs_per_year)/dMass # (Bq * (sec/yr) / kg)
+            elif weightFunc == 'DetectorMassPerTotalMass':
+                dStr = self.bscv.GetCurrentVar('detector')
+                dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # dIndex = self.bscd.GetDetectorList().index(dStr)
+                dMass = self.bscd.GetActiveDetectorMassList()[dIndex] # dMass = self.bscd.GetDetectorMassList()[dIndex]
+                tMass = np.sum(self.bscd.GetActiveDetectorMassList())
+                return dMass/tMass # (unitless, kg / kg)
             else:
                 print('  GetWeight: weightFunc not recognized')

@@ -33,9 +33,16 @@ print('...Results are spectra: hardwareComponent_decayChain_cut_configuration.*'
 print('===================')
 print('Loop over detectors; For each detector, loop over decayChains; For each decayChain, loop over hardwareComponents')
 
-recurHardwareComponent = {'r_objType': 'hardwareComponent', 'r_weightFunc': 'ActivityPerDetector', 'r_recur': {}}
+recurHardwareComponent = {'r_objType': 'hardwareComponent', 'r_weightFunc': 'ActivityPerDetectorMass', 'r_recur': {}}
 recurDecayChain = {'r_objType': 'decayChain', 'r_weightFunc': None, 'r_recur': recurHardwareComponent}
 bslp.For(objType = 'detector', weightFunc = None, **recurDecayChain)
 
 print('...Results are spectra: detector_decayChain_cut_configuration.*')
+print('===================')
+print('Loop over decayChains; For each decayChain, loop over detectors')
+
+recurDetector = {'r_objType': 'detector', 'r_weightFunc': 'DetectorMassPerTotalMass', 'r_recur': {}}
+bslp.For(objType = 'decayChain', weightFunc = None, **recurDetector)
+
+print('...Results are spectra: decayChain_cut_configuration.*')
 print('===================')
