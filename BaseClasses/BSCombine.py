@@ -8,10 +8,10 @@ class BSCombine():
         """
         A class to facilitate combination of sim results
         """
-        def __init__(self, weightFunc, bscv, bscd):
+        def __init__(self, weightFunc, BSCurrentVarsObject, BSConfigDataObject):
             self.weightFunc = weightFunc
-            self.bscv = bscv # The global BSCurrentVars object
-            self.bscd = bscd # The BSConfigData object
+            self.bscv = BSCurrentVarsObject # The global BSCurrentVars object
+            self.bscd = BSConfigDataObject # The BSConfigData object
 
             self.cut = None
             self.configuration = None
@@ -57,10 +57,7 @@ class BSCombine():
             elif weightFunc == 'BranchingRatio':
                 return self.branchingRatio
             elif weightFunc == 'TotalMass':
-                activeDetectorMassList = []
-                for i in range(len(self.bscd.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
-                    if self.bscd.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
-                        activeDetectorMassList.append(self.bscd.GetDetectorMassList()[i])
+                activeDetectorMassList = self.bscd.GetActiveDetectorMassList
                 return 1/np.sum(activeDetectorMassList)
             elif weightFunc == 'ActivityPerDetector':
                 dCActStr = self.bscv.GetCurrentVar('decayChain') + 'Activity'

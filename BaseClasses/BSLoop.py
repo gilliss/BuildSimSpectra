@@ -3,11 +3,11 @@ Functions to handle nested loops over different types. Loops could be nested in 
 Types: ['detector', 'hardwareComponent', 'decayChain', 'decayChainSegment']
 """
 
-import BaseClasses.BSConfigData as BSConfigData
-bscd = BSConfigData.BSConfigData()
-
 import BaseClasses.BSCurrentVars as BSCurrentVars
 bscv = BSCurrentVars.BSCurrentVars()
+
+import BaseClasses.BSConfigData as BSConfigData
+bscd = BSConfigData.BSConfigData(bscv)
 
 import BaseClasses.BSManageData as BSManageData
 bsmd = BSManageData.BSManageData(bscv) # bsmd needs the bscv object passed into it
@@ -53,10 +53,7 @@ class BSLoop():
 
         if(objType == 'detector'):
             # MAKE activeDetectorSNList # I should make this an object in the ConfigData file ...
-            activeDetectorSNList = []
-            for i in range(len(bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')])):
-                if bscd.GetActiveDetectorDict()[bscv.GetCurrentVar('configuration')][i] == 1:
-                    activeDetectorSNList.append(bscd.GetDetectorList()[i])
+            activeDetectorSNList = bscd.GetActiveDetectorSNList
             # LOOP OVER DETECTORS
             bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
             for obj in activeDetectorSNList: #bscd.GetDetectorList():

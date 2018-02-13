@@ -6,9 +6,34 @@ import BaseClasses.ConfigurationData.Private_ConfigData as ConfigData # Insert y
 cfgd = ConfigData.ConfigData()
 
 class BSConfigData():
-    def __init__(self):
+    def __init__(self, BSCurrentVarsObject):
+        self.bscv = BSCurrentVarsObject # bscv object is fed in as a data member. Fed from BSLoop.py
+        self.cut = None
+        self.configuration = None
+        self.detector = None
+        self.decayChain = None
+        self.segment = None
+        self.branchingRatio = None
+        self.hardwareComponent = None
+        self.hardwareGroup = None
         return None
 
+    def UpdateSelfCurrentVars(self):
+        cvDict = self.bscv.GetCurrentVarsDict()
+        self.cut = cvDict['cut']
+        self.configuration = cvDict['configuration']
+        self.detector = cvDict['detector']
+        self.decayChain = cvDict['decayChain']
+        self.segment = cvDict['segment']
+        self.branchingRatio = cvDict['branchingRatio']
+        self.hardwareComponent = cvDict['hardwareComponent']
+        self.hardwareGroup = cvDict['hardwareGroup']
+
+    ###############################
+    ###############################
+    ### Detectors
+    ###############################
+    ###############################
     def GetConfigurationList(self):
         return cfgd.configurationList
     def GetActiveDetectorDict(self):
@@ -20,11 +45,42 @@ class BSConfigData():
     def GetEnrichedDetectorList(self):
         return cfgd.enrichedDetectorList
 
+    def GetActiveDetectorSNList(self):
+        """
+        Use the current configuration's activeDetectorDict to make a list of only the active detector serial numbers (SNs)
+        """
+        self.UpdateSelfCurrentVars()
+        activeDetectorSNList = []
+        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
+            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
+                activeDetectorSNList.append(self.GetDetectorList()[i])
+        return activeDetectorSNList
+    def GetActiveDetectorMassList(self):
+        """
+        Use the current configuration's activeDetectorDict to make a list of only the active detectors' masses
+        """
+        self.UpdateSelfCurrentVars()
+        activeDetectorMassList = []
+        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
+            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
+                activeDetectorMassList.append(self.GetDetectorMassList()[i])
+        return activeDetectorMassList
+
+    ###############################
+    ###############################
+    ### Decay Chains, Segments, Branching Ratios
+    ###############################
+    ###############################
     def GetDecayChainList(self):
         return cfgd.decayChainList
     def GetDecayChainSegmentBranchingRatioDict(self):
         return cfgd.decayChainSegmentBranchingRatioDict
 
+    ###############################
+    ###############################
+    ### Hardware Components and Assay
+    ###############################
+    ###############################
     def GetSecsPerYear(self):
         """
         Constant converting from seconds to years
