@@ -72,6 +72,7 @@ class BSLoop():
             r_weightFunc = recur['r_weightFunc']
             r_recur = recur['r_recur'] #debug #print('recur args:', r_objType, r_weightFunc, r_recur)
 
+        # THIS IS THE MAIN RECURSIVE LOOP. IT LOOPS, PULLS DATA, SAVES DATA, COMBINES DATA, RETURNS DATA
         bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
         for obj in self.GetBSCDList(objType): # loop over the objs of this objType
             bscv.SetCurrentVar(objType, obj) # set the current var for this objType. Informs the paths to files, the data pulled for weighting functions, etc.
