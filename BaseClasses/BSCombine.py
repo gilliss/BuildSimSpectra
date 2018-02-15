@@ -67,7 +67,7 @@ class BSCombine():
                 dMass = self.bscd.GetActiveDetectorMassList()[dIndex] # dMass = self.bscd.GetDetectorMassList()[dIndex]
                 activity_hwC_dC = self.bscd.GetHardwareComponentDict()[hwCStr][dCActStr][0]
                 secs_per_year = self.bscd.GetSecsPerYear()
-                return (activity_hwC_dC * secs_per_year)/dMass # (Bq * (sec/yr) / kg)
+                return (activity_hwC_dC * secs_per_year)/dMass # (Bq * (sec/yr) / kg) # Bq is the rate in the total mass of this material.
             elif weightFunc == 'DetectorMassPerTotalMass':
                 dStr = self.bscv.GetCurrentVar('detector')
                 dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # dIndex = self.bscd.GetDetectorList().index(dStr)
