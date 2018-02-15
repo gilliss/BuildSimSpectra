@@ -48,6 +48,8 @@ class BSConfigData():
     def GetActiveDetectorSNList(self):
         """
         Use the current configuration's activeDetectorDict to make a list of only the active detector serial numbers (SNs)
+        Note: The way this is coded now, any custom configuration of detectors (returned by GetActiveDetectorDict) has to line up with the indices of GetDetectorList.
+        To satisfy this, just put zeros in the activeDetectorDict wherever you don't want a detector.
         """
         self.UpdateSelfCurrentVars()
         activeDetectorSNList = []
