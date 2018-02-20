@@ -9,8 +9,8 @@ bslp = BSLoop.BSLoop()
 print('===================')
 print('...Set the configuration, cut, and verbosity')
 
-cV = {'configuration': 'DS5', 'cut': 1}
-bslp.SetCurrentVars(**cV)
+configCutDict = {'configuration': 'DS5', 'cut': 1}
+bslp.SetConfigCut(**configCutDict)
 bslp.SetVerbosity(2)
 
 print('===================')

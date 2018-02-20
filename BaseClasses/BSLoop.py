@@ -34,7 +34,7 @@ class BSLoop():
         if bscv.GetCurrentVar('verbose') == 2:
             print(args)
 
-    def SetCurrentVars(self, **currentVars):
+    def SetConfigCut(self, **currentVars):
         # make this an automatic for loop through the **currentVars dict {bascv.SetCurrentVar(obj, currentVars[obj])}
         # this function should probably inherit from/be implemented in BSCurrentVars
         bscv.SetCurrentVar('configuration', currentVars['configuration'])
