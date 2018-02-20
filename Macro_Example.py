@@ -1,5 +1,5 @@
 """
-Explicit decayChain and segment loops
+Macro to reproduce the sim spectra production procedure done in mjdsim/
 """
 
 import BaseClasses.BSLoop as BSLoop
