@@ -24,18 +24,15 @@ class BSLoop():
         print('Remember to set configuration and cut, and use desired recursion/looping routine with desired weightFuncs set')
         return None
 
-    def ReturnHello(self):
-        print(bscd.GetDecayChainList())
+    def Print(self, *args):
+        if bscv.GetCurrentVar('verbose') == 2:
+            print(args)
 
     def SetVerbosity(self, setting):
         bscv.SetVerbosity(setting)
 
     def SetMacroData(self, objType, inData = None):
         bscd.SetMacroData(objType = objType, inData = inData)
-
-    def Print(self, *args):
-        if bscv.GetCurrentVar('verbose') == 2:
-            print(args)
 
     def SetConfigCut(self, **currentVars):
         # make this an automatic for loop through the **currentVars dict {bascv.SetCurrentVar(obj, currentVars[obj])}

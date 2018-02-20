@@ -42,7 +42,7 @@ class BSConfigData():
 
     def SetMacroData(self, objType, inData = None):
         """
-        Set the custom list of objects that will be looped over in this macro.
+        Set the custom list of objects that will be looped over by the macro.
         Useful for custom specification of inputs to a spectrum, and for splitting up spectrum building into multiple jobs
         """
         if(objType == 'detector'):
@@ -56,8 +56,7 @@ class BSConfigData():
 
     def GetMacroData(self, objType):
         """
-        Set the custom list of objects that will be looped over in this macro.
-        Useful for custom specification of inputs to a spectrum, and for splitting up spectrum building into multiple jobs
+        Get the custom list of objects that will be looped over by the macro.
         """
         if(objType == 'detector'):
             return self.macroDetectorSNList
@@ -90,9 +89,9 @@ class BSConfigData():
 
     def GetActiveDetectorSNList(self):
         """
-        Use the current configuration's activeDetectorDict to make a list of only the active detector serial numbers (SNs)
-        Note: The way this is coded now, any custom configuration of detectors (returned by GetActiveDetectorDict) has to line up with the indices of GetDetectorList.
-        To satisfy this, just put zeros in the activeDetectorDict wherever you don't want a detector.
+        Use the current configuration's full activeDetectorDict to make a list of only the active detector serial numbers (SNs).
+        The returned activeDetectorSNList does not need to correspond 1-to-1 with the (potentially custom) macroDetectorSNList.
+        This is because only the macroDetectorSNList will be looped over in BSLoop.py and the SNs/masses of those detectors will be found in the activeDetectorSNList in BSCombine.py::GetWeight().
         """
         self.UpdateSelfCurrentVars()
         activeDetectorSNList = []
@@ -102,7 +101,9 @@ class BSConfigData():
         return activeDetectorSNList
     def GetActiveDetectorMassList(self):
         """
-        Use the current configuration's activeDetectorDict to make a list of only the active detectors' masses
+        Use the current configuration's activeDetectorDict to make a list of only the active detectors' masses.
+        The returned activeDetectorMassList does not need to correspond 1-to-1 with the (potentially custom) macroDetectorSNList.
+        This is because only the macroDetectorSNList will be looped over in BSLoop.py and the SNs/masses of those detectors will be found in the activeDetectorSNList in BSCombine.py::GetWeight().
         """
         self.UpdateSelfCurrentVars()
         activeDetectorMassList = []

@@ -38,7 +38,7 @@ class BSCombine():
 
         def Add(self, data):
             """
-            Add 'obj' to 'into' according to weight expressed in 'comboRule'
+            Add data into combinedData, with weight determined by weightFunc
             """
             weight = self.GetWeight(self.weightFunc)
             print('  Adding hist with weight ' + self.weightFunc + ' = ' + str(weight))
@@ -50,6 +50,10 @@ class BSCombine():
             return self.combinedData
 
         def GetWeight(self, weightFunc):
+            """
+            Return the weight with which data will be added into combinedData.
+            The name of a weightFunc must be specified.
+            """
             self.UpdateSelfCurrentVars()
 
             if weightFunc == 'One':
