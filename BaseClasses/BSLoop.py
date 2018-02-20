@@ -30,6 +30,9 @@ class BSLoop():
     def SetVerbosity(self, setting):
         bscv.SetVerbosity(setting)
 
+    def SetMacroData(self, objType, inData = None):
+        bscd.SetMacroData(objType = objType, inData = inData)
+
     def Print(self, *args):
         if bscv.GetCurrentVar('verbose') == 2:
             print(args)
@@ -44,14 +47,21 @@ class BSLoop():
         """
         Return the list or dict of objs of this objType. To be looped over in the For() routine.
         """
-        if(objType == 'detector'):
-            return bscd.GetActiveDetectorSNList()
-        if(objType == 'decayChain'):
-            return bscd.GetDecayChainList()
         if(objType == 'segment'):
-            return bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]
-        if(objType == 'hardwareComponent'):
-            return bscd.GetHardwareComponentList()
+            # Having this GetMacroData('segment') call return a dict is not consistent with the other options which return lists.
+            # This can be made for flexible and consistent by implementing a separate loop over branchingRatio.
+            # But there is only one branchingRatio per segment, so it's kind of awkward/unecessary.
+            return bscd.GetMacroData(objType)[bscv.GetCurrentVar('decayChain')] #return bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]
+        else:
+            return bscd.GetMacroData(objType)
+        # if(objType == 'detector'):
+        #     return bscd.GetActiveDetectorSNList()
+        # if(objType == 'decayChain'):
+        #     return bscd.GetDecayChainList()
+        # if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
+        #     return bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]
+        # if(objType == 'hardwareComponent'):
+        #     return bscd.GetHardwareComponentList()
 
     def For(self, objType = None, weightFunc = None, **recur):
         """
@@ -67,10 +77,10 @@ class BSLoop():
         -You only combine data if the pulled data is not None and the weightFunc is set
         -By pull, I mean bsmd.GetData()
         """
-        if recur:
+        if recur: #debug #print('recur args:', r_objType, r_weightFunc, r_recur)
             r_objType = recur['r_objType']
             r_weightFunc = recur['r_weightFunc']
-            r_recur = recur['r_recur'] #debug #print('recur args:', r_objType, r_weightFunc, r_recur)
+            r_recur = recur['r_recur']
 
         # THIS IS THE MAIN RECURSIVE LOOP. IT LOOPS, PULLS DATA, SAVES DATA, COMBINES DATA, RETURNS DATA
         bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop

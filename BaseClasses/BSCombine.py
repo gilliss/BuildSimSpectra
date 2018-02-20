@@ -63,14 +63,14 @@ class BSCombine():
                 dCActStr = self.bscv.GetCurrentVar('decayChain') + 'Activity'
                 hwCStr = self.bscv.GetCurrentVar('hardwareComponent')
                 dStr = self.bscv.GetCurrentVar('detector')
-                dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # dIndex = self.bscd.GetDetectorList().index(dStr)
+                dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # will raise exception if dStr not in list # dIndex = self.bscd.GetDetectorList().index(dStr)
                 dMass = self.bscd.GetActiveDetectorMassList()[dIndex] # dMass = self.bscd.GetDetectorMassList()[dIndex]
                 activity_hwC_dC = self.bscd.GetHardwareComponentDict()[hwCStr][dCActStr][0]
                 secs_per_year = self.bscd.GetSecsPerYear()
                 return (activity_hwC_dC * secs_per_year)/dMass # (Bq * (sec/yr) / kg) # Bq is the rate in the total mass of this material.
             elif weightFunc == 'DetectorMassPerTotalMass':
                 dStr = self.bscv.GetCurrentVar('detector')
-                dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # dIndex = self.bscd.GetDetectorList().index(dStr)
+                dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # will raise exception if dStr not in list # dIndex = self.bscd.GetDetectorList().index(dStr)
                 dMass = self.bscd.GetActiveDetectorMassList()[dIndex] # dMass = self.bscd.GetDetectorMassList()[dIndex]
                 tMass = np.sum(self.bscd.GetActiveDetectorMassList())
                 return dMass/tMass # (unitless, kg / kg)

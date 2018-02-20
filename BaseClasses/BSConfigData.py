@@ -16,6 +16,11 @@ class BSConfigData():
         self.branchingRatio = None
         self.hardwareComponent = None
         self.hardwareGroup = None
+
+        self.macroDetectorSNList = None
+        self.macroDecayChainList = None
+        self.macroDecayChainSegmentBranchingRatioDict = None
+        self.macroHardwareComponentList = None
         return None
 
     def UpdateSelfCurrentVars(self):
@@ -31,8 +36,46 @@ class BSConfigData():
 
     ###############################
     ###############################
-    ### Detectors
+    ### MacroData Methods
     ###############################
+    ###############################
+
+    def SetMacroData(self, objType, inData = None):
+        """
+        Set the custom list of objects that will be looped over in this macro.
+        Useful for custom specification of inputs to a spectrum, and for splitting up spectrum building into multiple jobs
+        """
+        if(objType == 'detector'):
+            self.macroDetectorSNList = inData
+        if(objType == 'decayChain'):
+            self.macroDecayChainList = inData
+        if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
+            self.macroDecayChainSegmentBranchingRatioDict = inData
+        if(objType == 'hardwareComponent'):
+            self.macroHardwareComponentList = inData
+
+    def GetMacroData(self, objType):
+        """
+        Set the custom list of objects that will be looped over in this macro.
+        Useful for custom specification of inputs to a spectrum, and for splitting up spectrum building into multiple jobs
+        """
+        if(objType == 'detector'):
+            return self.macroDetectorSNList
+        if(objType == 'decayChain'):
+            return self.macroDecayChainList
+        if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
+            return self.macroDecayChainSegmentBranchingRatioDict
+        if(objType == 'hardwareComponent'):
+            return self.macroHardwareComponentList
+
+    ###############################
+    ###############################
+    ### Access Full ConfigData Methods
+    ###############################
+    ###############################
+
+    ###############################
+    ### Detectors
     ###############################
     def GetConfigurationList(self):
         return cfgd.configurationList
@@ -69,9 +112,7 @@ class BSConfigData():
         return activeDetectorMassList
 
     ###############################
-    ###############################
     ### Decay Chains, Segments, Branching Ratios
-    ###############################
     ###############################
     def GetDecayChainList(self):
         return cfgd.decayChainList
@@ -79,9 +120,7 @@ class BSConfigData():
         return cfgd.decayChainSegmentBranchingRatioDict
 
     ###############################
-    ###############################
     ### Hardware Components and Assay
-    ###############################
     ###############################
     def GetSecsPerYear(self):
         """
