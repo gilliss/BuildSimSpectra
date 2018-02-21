@@ -40,19 +40,29 @@ class BSConfigData():
     ###############################
     ###############################
 
-    def SetMacroData(self, objType, inData = None):
+    def SetMacroData(self, objType = None, inData = None):
         """
         Set the custom list of objects that will be looped over by the macro.
         Useful for custom specification of inputs to a spectrum, and for splitting up spectrum building into multiple jobs
         """
-        if(objType == 'detector'):
-            self.macroDetectorSNList = inData
-        if(objType == 'decayChain'):
-            self.macroDecayChainList = inData
-        if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
-            self.macroDecayChainSegmentBranchingRatioDict = inData
-        if(objType == 'hardwareComponent'):
-            self.macroHardwareComponentList = inData
+        if inData == 'default':
+            if(objType == 'detector'):
+                self.macroDetectorSNList = self.GetActiveDetectorSNList()
+            if(objType == 'decayChain'):
+                self.macroDecayChainList = self.GetDecayChainList()
+            if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
+                self.macroDecayChainSegmentBranchingRatioDict = self.GetDecayChainSegmentBranchingRatioDict()
+            if(objType == 'hardwareComponent'):
+                self.macroHardwareComponentList = self.GetHardwareComponentList()
+        else:
+            if(objType == 'detector'):
+                self.macroDetectorSNList = inData
+            if(objType == 'decayChain'):
+                self.macroDecayChainList = inData
+            if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
+                self.macroDecayChainSegmentBranchingRatioDict = inData
+            if(objType == 'hardwareComponent'):
+                self.macroHardwareComponentList = inData
 
     def GetMacroData(self, objType):
         """
@@ -118,6 +128,9 @@ class BSConfigData():
     def GetDecayChainList(self):
         return cfgd.decayChainList
     def GetDecayChainSegmentBranchingRatioDict(self):
+        """
+        Returns a two-level dict mapping from decayChains to their segments, and then from segments to their branchingRatio.
+        """
         return cfgd.decayChainSegmentBranchingRatioDict
 
     ###############################
