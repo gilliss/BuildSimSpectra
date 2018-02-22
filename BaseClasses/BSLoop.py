@@ -45,20 +45,10 @@ class BSLoop():
         Return the list or dict of objs of this objType. To be looped over in the For() routine.
         """
         if(objType == 'segment'):
-            # Having this GetMacroData('segment') call return a dict is not consistent with the other options which return lists.
-            # This can be made for flexible and consistent by implementing a separate loop over branchingRatio.
-            # But there is only one branchingRatio per segment, so it's kind of awkward/unecessary.
+            # Special case for segment b/c this GetMacroData('segment') call returns a dict, rather than a list
             return bscd.GetMacroData(objType)[bscv.GetCurrentVar('decayChain')] #return bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]
         else:
             return bscd.GetMacroData(objType)
-        # if(objType == 'detector'):
-        #     return bscd.GetActiveDetectorSNList()
-        # if(objType == 'decayChain'):
-        #     return bscd.GetDecayChainList()
-        # if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
-        #     return bscd.GetDecayChainSegmentBranchingRatioDict()[bscv.GetCurrentVar('decayChain')]
-        # if(objType == 'hardwareComponent'):
-        #     return bscd.GetHardwareComponentList()
 
     def For(self, objType = None, weightFunc = None, **recur):
         """
