@@ -50,7 +50,7 @@ class BSConfigData():
                 self.macroDetectorSNList = self.GetActiveDetectorSNList()
             if(objType == 'decayChain'):
                 self.macroDecayChainList = self.GetDecayChainList()
-            if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
+            if(objType == 'segment'):
                 self.macroDecayChainSegmentBranchingRatioDict = self.GetDecayChainSegmentBranchingRatioDict()
             if(objType == 'hardwareComponent'):
                 self.macroHardwareComponentList = self.GetHardwareComponentList()
@@ -59,7 +59,7 @@ class BSConfigData():
                 self.macroDetectorSNList = inData
             if(objType == 'decayChain'):
                 self.macroDecayChainList = inData
-            if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
+            if(objType == 'segment'):
                 self.macroDecayChainSegmentBranchingRatioDict = inData
             if(objType == 'hardwareComponent'):
                 self.macroHardwareComponentList = inData
@@ -72,7 +72,7 @@ class BSConfigData():
             return self.macroDetectorSNList
         if(objType == 'decayChain'):
             return self.macroDecayChainList
-        if(objType == 'segment'): # Having this return a dict is not consistent with the other options returning a list. This can be made for flexible and consistent by implementing separate loop over branchingRatio. But there is only one branchingRatio per segment, so its kind of unecessary
+        if(objType == 'segment'):
             return self.macroDecayChainSegmentBranchingRatioDict
         if(objType == 'hardwareComponent'):
             return self.macroHardwareComponentList

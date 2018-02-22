@@ -15,7 +15,7 @@ bslp.SetConfigCut(**configCutDict)
 bslp.SetVerbosity(2)
 
 print('===================')
-print('...Customize the ConfigData') # As currently implemented must call SetMacroData for all needed categories of data
+print('...Customize the ConfigData') # As currently implemented, must call SetMacroData for all needed categories of data
 
 bslp.SetMacroData(objType = 'detector', inData = ['1010102', '1020101'])
 bslp.SetMacroData(objType = 'hardwareComponent', inData = ['EnrGe', 'DUCopper'])
