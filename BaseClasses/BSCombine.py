@@ -10,8 +10,8 @@ class BSCombine():
         """
         def __init__(self, weightFunc, BSCurrentVarsObject, BSConfigDataObject):
             self.weightFunc = weightFunc
-            self.bscv = BSCurrentVarsObject # The global BSCurrentVars object
-            self.bscd = BSConfigDataObject # The BSConfigData object
+            self.bscv = BSCurrentVarsObject # bscv object is fed in as a data member. Fed from BSLoop.py
+            self.bscd = BSConfigDataObject # bscd object is fed in as a data member. Fed from BSLoop.py
 
             self.cut = None
             self.configuration = None
@@ -24,6 +24,10 @@ class BSCombine():
 
             self.combinedData = np.zeros(10000)
             return None
+
+        def Print(self, val, *args):
+            if val <= self.bscv.GetCurrentVar('verbosity'): # 0 = Error, 1 = Some, 2 = More, 3 = Debug
+                print(args)
 
         def UpdateSelfCurrentVars(self):
             cvDict = self.bscv.GetCurrentVarsDict()
@@ -41,12 +45,12 @@ class BSCombine():
             Add data into combinedData, with weight determined by weightFunc
             """
             weight = self.GetWeight(self.weightFunc)
-            print('  Adding hist with weight ' + self.weightFunc + ' = ' + str(weight))
+            self.Print(2, '  Adding hist with weight ' + self.weightFunc + ' = ' + str(weight))
             self.combinedData = self.combinedData + data*weight
             return None
 
         def GetCombinedData(self):
-            print('  np.sum(combinedData) =', np.sum(self.combinedData))
+            self.Print(2, '  Combined data weighted sum =', np.sum(self.combinedData))
             return self.combinedData
 
         def GetWeight(self, weightFunc):
@@ -79,4 +83,4 @@ class BSCombine():
                 tMass = np.sum(self.bscd.GetActiveDetectorMassList())
                 return dMass/tMass # (unitless, kg / kg)
             else:
-                print('  GetWeight: weightFunc not recognized')
+                self.Print(0, 'Error', '  GetWeight: weightFunc not recognized')

@@ -8,7 +8,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class BSPyROOT():
-    def __init__(self):
+    def __init__(self, BSCurrentVarsObject):
+        self.bscv = BSCurrentVarsObject # bscv object is fed in as a data member. Fed from BSManageData.py
         self.cut = None
         self.configuration = None
         self.detector = None
@@ -24,6 +25,10 @@ class BSPyROOT():
 
         return None
 
+    def Print(self, val, *args):
+        if val <= self.bscv.GetCurrentVar('verbosity'): # 0 = Error, 1 = Some, 2 = More, 3 = Debug
+            print(args)
+
     def GetBinnedData(self, inFile, **currentVarsDict):
 
         cvDict = currentVarsDict
@@ -36,6 +41,8 @@ class BSPyROOT():
         hardwareComponent = cvDict['hardwareComponent']
         hardwareGroup = cvDict['hardwareGroup']
 
+        verbosity = cvDict['verbosity']
+
         f = TFile(inFile, 'READ')
         c = f.Get('c1')
         hName = 'h' + str(cut)
@@ -43,28 +50,17 @@ class BSPyROOT():
 
         hArray = np.zeros(self.nBinsX)
         if h.GetEntries() > 0:
-            print('  Working with:', h.GetName(), h.GetTitle(), h.GetNbinsX(), h.GetEntries(), h.Integral()) #  debug
+            self.Print(3, 'Debug', '  Working with:', h.GetName(), h.GetTitle(), h.GetNbinsX(), h.GetEntries(), h.Integral())
             hArray = np.frombuffer(h.GetArray(), dtype = 'float', count = self.nBinsX, offset = 0) # getting array of data from PyDoubleBuffer object
-        #debug: #else:
-            #debug: #print('  0 entries. Perhaps 0 MC hits? Returning hArray = zeros.')
-
-            # PLOTTING
-            # xArray = np.arange(self.xmin + 0.5, self.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
-            #
-            # plt.step(xArray, hArray, where = 'mid', color='k')
-            # plt.yscale('log')#, nonposy='clip')
-            # plt.xlim(self.xmin, self.xmax)
-            #
-            # figName = '%s_%s_%s_%s.pdf' % (hardwareComponent, segment, detector, str(cut))
-            # print('  Saving figure', figName)
-            # plt.savefig(figName)
+        else:
+            self.Print(3, 'Debug','  0 entries. Perhaps 0 MC hits? Returning hArray = zeros.')
 
         f.Close()
         del f
         del c
         del h
 
-        #debug: #print('  Does np.sum(hArray) match h.Integral()? =', np.sum(hArray))
+        self.Print(3, 'Debug', '  np.sum(hArray) should match h.Integral() of', np.sum(hArray))
         return hArray
 
 # NOTES

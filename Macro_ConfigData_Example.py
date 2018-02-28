@@ -12,7 +12,7 @@ print('...Set the configuration, cut, and verbosity')
 
 configCutDict = {'configuration': 'DS5', 'cut': 1}
 bslp.SetConfigCut(**configCutDict)
-bslp.SetVerbosity(2)
+bslp.SetVerbosity(0)
 
 print('===================')
 print('...Customize the ConfigData') # As currently implemented, must call SetMacroData for all needed categories of data

@@ -4,11 +4,7 @@ Class to find data from directory structures within mjdsim/ and elsewhere on PDS
 
 import os
 
-# import BaseClasses.BSCurrentVars as BSCurrentVars # A bscv object is fed in as a data member
-# bscv = BSCurrentVars.BSCurrentVars()
-
-import BaseClasses.BSPyROOT as BSPyROOT
-bspr = BSPyROOT.BSPyROOT()
+import BaseClasses.BSPyROOT as BSPyROOT # bspr object is instantiated as a data member upon __init__
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -20,6 +16,7 @@ class BSManageData():
         """
         def __init__(self, BSCurrentVarsObject):
             self.bscv = BSCurrentVarsObject # bscv object is fed in as a data member. Fed from BSLoop.py
+            self.bspr = BSPyROOT.BSPyROOT(self.bscv) # note bscv object is passed in
             self.cut = None
             self.configuration = None
             self.detector = None
@@ -34,8 +31,8 @@ class BSManageData():
 
             return None
 
-        def Print(self, *args):
-            if self.bscv.GetCurrentVar('verbose') > 0:
+        def Print(self, val, *args):
+            if val <= self.bscv.GetCurrentVar('verbosity'): # 0 = Error, 1 = Some, 2 = More, 3 = Debug
                 print(args)
 
         def UpdateSelfCurrentVars(self):
@@ -49,6 +46,8 @@ class BSManageData():
             self.hardwareComponent = cvDict['hardwareComponent']
             self.hardwareGroup = cvDict['hardwareGroup']
 
+            self.verbosity = cvDict['verbosity']
+
         def GetReadPath(self):
             """
             Get the full path to a file. Many variants based on what weightFuncs are on or off or what level of loop you're in
@@ -57,7 +56,7 @@ class BSManageData():
 
             fullPathToFile = ''
 
-            #debug #print('  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
+            self.Print(3, 'Debug', '  cVs:', self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
 
             # base files: basePathMJDSIM (mjdsim: hardwareComponent_segment_detector.root, e.g. DUCopper_A210_Z81_1010102)
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
@@ -93,7 +92,7 @@ class BSManageData():
             if(os.path.isfile(fullPathToFile)):
                 return fullPathToFile
             else:
-                self.Print('  GetReadPath: No case matching this data.')
+                self.Print(0, 'Error', '  GetReadPath: No case matching this data.')
                 return None
 
         def GetWritePath(self):
@@ -102,7 +101,7 @@ class BSManageData():
             """
             self.UpdateSelfCurrentVars()
 
-            #debug #print('  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
+            self.Print(3, 'Degug', '  cVs:',self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
 
             fullPathToFile = ''
 
@@ -140,7 +139,7 @@ class BSManageData():
             if fullPathToFile != '':
                 return fullPathToFile
             else:
-                self.Print('  GetWritePath: No case matching this data.')
+                self.Print(0, 'Error', '  GetWritePath: No case matching this data.')
                 return None
 
         def GetData(self):
@@ -152,9 +151,9 @@ class BSManageData():
             if fullPathToFile != None:
                 cvDict = self.bscv.GetCurrentVarsDict()
                 if self.basePathMJDSIM in fullPathToFile:
-                    return bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
+                    return self.bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
                 if self.basePathOutput in fullPathToFile:
-                    print('  Working with: np.sum() =', np.sum(np.load(fullPathToFile))) #  debug
+                    self.Print(3, 'Debug', '  Working with: np.sum() =', np.sum(np.load(fullPathToFile))) #  debug
                     return np.load(fullPathToFile)
             else:
                 return None
@@ -163,16 +162,16 @@ class BSManageData():
             """
             Save file
             """
-            #debug: #print('  Hist integral np.sum(data) =', np.sum(data))
+            self.Print(3, 'Debug', '  Hist integral np.sum(data) =', np.sum(data))
 
             # MAKE THE PLOT
             if sFig == True:
-                xArray = np.arange(bspr.xmin + 0.5, bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
+                xArray = np.arange(self.bspr.xmin + 0.5, self.bspr.xmax + 0.5) # to be used as list of bin edges (np treats last number as INCLUDED upper edge of last been)
                 plt.clf() # clear current figure to prevent any previous figures or axes from persisting
                 plt.step(xArray, data, where = 'mid', color = self.GetColor())
                 if np.sum(data) > 0:
                     plt.yscale('log')#, nonposy='clip')
-                plt.xlim(bspr.xmin, bspr.xmax)
+                plt.xlim(self.bspr.xmin, self.bspr.xmax)
 
             # DO THE SAVING
             fileName = self.GetWritePath()
@@ -180,19 +179,19 @@ class BSManageData():
                 if sDat == True:
                     fileName = self.GetWritePath() # numpy will automatically append .npy
                     if(os.path.isfile(fileName + '.npy')):
-                        self.Print('  Save: Data already saved. Not saving.')
+                        self.Print(2, '  Save: Data already saved. Not saving.')
                     else:
-                        self.Print('  Saving data', fileName + '.npy')
+                        self.Print(2, '  Saving data', fileName + '.npy')
                         np.save(fileName, data, allow_pickle = False) # numpy will automatically append .npy
                 if sFig == True:
                     fileName = fileName + '.pdf'
                     if(os.path.isfile(fileName)):
-                        self.Print('  Save: Figure already saved. Not saving.')
+                        self.Print(2, '  Save: Figure already saved. Not saving.')
                     else:
-                        self.Print('  Saving figure', fileName)
+                        self.Print(2, '  Saving figure', fileName)
                         plt.savefig(fileName)
             else:
-                self.Print('  Save: GetWritePath is None. Not saving.')
+                self.Print(0, 'Error', '  Save: GetWritePath is None. Not saving.')
 
         def GetColor(self):
             """

@@ -1,19 +1,20 @@
 """
 Functions to handle nested loops over different types. Loops could be nested in any order.
 Types: ['detector', 'hardwareComponent', 'decayChain', 'decayChainSegment']
+In macro that calls this class, remember to set verbosity, configuration and cut, and use desired recursion/looping routine with desired weightFuncs set.
 """
 
 import BaseClasses.BSCurrentVars as BSCurrentVars
 bscv = BSCurrentVars.BSCurrentVars()
 
 import BaseClasses.BSConfigData as BSConfigData
-bscd = BSConfigData.BSConfigData(bscv)
+bscd = BSConfigData.BSConfigData(bscv) # note bscv object is passed in
 
 import BaseClasses.BSManageData as BSManageData
-bsmd = BSManageData.BSManageData(bscv) # bsmd needs the bscv object passed into it
+bsmd = BSManageData.BSManageData(bscv) # note bscv object is passed in
 
 import BaseClasses.BSCombine as BSCombine
-bscDict = {}
+bscDict = {} # BSCombine instances are instantiated and added into this dict in the For() method
 
 class BSLoop():
     """
@@ -21,11 +22,10 @@ class BSLoop():
     Types: ['detector', 'hardwareComponent', 'decayChain', 'segment', 'hardwareGroup', 'configuration', 'cut']
     """
     def __init__(self):
-        print('Remember to set configuration and cut, and use desired recursion/looping routine with desired weightFuncs set')
         return None
 
-    def Print(self, *args):
-        if bscv.GetCurrentVar('verbose') == 2:
+    def Print(self, val, *args):
+        if val <= bscv.GetCurrentVar('verbosity'): # 0 = Error, 1 = Some, 2 = More, 3 = Debug
             print(args)
 
     def SetVerbosity(self, setting):
@@ -62,10 +62,11 @@ class BSLoop():
         -You only combine data if the pulled data is not None and the weightFunc is set
         -By pull, I mean bsmd.GetData()
         """
-        if recur: #debug #print('recur args:', r_objType, r_weightFunc, r_recur)
+        if recur:
             r_objType = recur['r_objType']
             r_weightFunc = recur['r_weightFunc']
             r_recur = recur['r_recur']
+            self.Print(3, 'Debug', 'recur args:', r_objType, r_weightFunc, r_recur)
 
         # THIS IS THE MAIN RECURSIVE LOOP. IT LOOPS, PULLS DATA, SAVES DATA, COMBINES DATA, RETURNS DATA
         bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
@@ -73,7 +74,7 @@ class BSLoop():
             bscv.SetCurrentVar(objType, obj) # set the current var for this objType. Informs the paths to files, the data pulled for weighting functions, etc.
             if objType == 'segment': # could remove this special case if branchingRatio was treated as its own loop
                 bscv.SetCurrentVar('branchingRatio', self.GetBSCDList(objType)[obj])
-            self.Print(objType, bscv.GetCurrentVar(objType))
+            self.Print(1, objType, bscv.GetCurrentVar(objType))
             if recur:
                 data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur) # enter deeper level of recursion and return the results back up into this loop
             if not recur:

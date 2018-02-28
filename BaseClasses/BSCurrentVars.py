@@ -17,7 +17,7 @@ class BSCurrentVars():
                 'hardwareComponent': None,
                 'hardwareGroup': None,
 
-                'verbose': 0
+                'verbosity': 0
                 }
         return None
 
@@ -37,4 +37,4 @@ class BSCurrentVars():
         """
         Set the verbosity for output. 0 = None, 1 = a little more, ...
         """
-        self.SetCurrentVar(objType = 'verbose', val = setting)
+        self.SetCurrentVar(objType = 'verbosity', val = setting)
