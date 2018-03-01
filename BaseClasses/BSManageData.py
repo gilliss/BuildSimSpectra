@@ -92,8 +92,11 @@ class BSManageData():
             if(os.path.isfile(fullPathToFile)):
                 return fullPathToFile
             else:
-                self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
-                return None
+                if ('Ge' not in fileName) and ('_Z0_' in fullPathToFile): # avoid printing expected missing files
+                    return None
+                else:
+                    self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
+                    return None
 
         def GetWritePath(self):
             """
