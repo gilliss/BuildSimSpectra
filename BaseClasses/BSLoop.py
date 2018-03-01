@@ -35,7 +35,7 @@ class BSLoop():
 
     def SetSave(self, sDat = False, sFig = False):
         self.saveData = sDat
-        self.saveFigure = sDat
+        self.saveFigure = sFig
 
     def SetMacroData(self, objType, inData = None):
         bscd.SetMacroData(objType = objType, inData = inData)

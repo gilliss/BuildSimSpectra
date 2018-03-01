@@ -158,7 +158,7 @@ class BSManageData():
             else:
                 return None
 
-        def Save(self, data, sDat, sFig):
+        def Save(self, data, sDat = False, sFig = False):
             """
             Save file
             """
