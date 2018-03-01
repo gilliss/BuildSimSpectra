@@ -1,7 +1,7 @@
 """
 Functions to handle nested loops over different types. Loops could be nested in any order.
 Types: ['detector', 'hardwareComponent', 'decayChain', 'decayChainSegment']
-In macro that calls this class, remember to set verbosity, configuration and cut, and use desired recursion/looping routine with desired weightFuncs set.
+In macro that calls this class, remember to set verbosity, configuration and cut, saveData and saveFigure, and use desired recursion/looping routine with desired weightFuncs set.
 """
 
 import BaseClasses.BSCurrentVars as BSCurrentVars
@@ -22,6 +22,8 @@ class BSLoop():
     Types: ['detector', 'hardwareComponent', 'decayChain', 'segment', 'hardwareGroup', 'configuration', 'cut']
     """
     def __init__(self):
+        self.saveData = False
+        self.saveFigure = False
         return None
 
     def Print(self, val, *args):
@@ -30,6 +32,10 @@ class BSLoop():
 
     def SetVerbosity(self, setting):
         bscv.SetVerbosity(setting)
+
+    def SetSave(self, sDat = False, sFig = False):
+        self.saveData = sDat
+        self.saveFigure = sDat
 
     def SetMacroData(self, objType, inData = None):
         bscd.SetMacroData(objType = objType, inData = inData)
@@ -81,7 +87,7 @@ class BSLoop():
             if not recur:
                 data = bsmd.GetData() # return the data from lower level of recursion up into this loop
             if (data is not None):
-                bsmd.Save(data, sDat = True, sFig = True) # save the data that got fed in
+                bsmd.Save(data, sDat = self.saveData, sFig = self.saveFigure) # save the data that got fed in
                 if (weightFunc != None):
                     bscDict[objType].Add(data) # add data into combo for this level
         bscv.ResetCurrentVar(objType) # erase the current var for this objType since we are exiting the level of recursion owned by this objType.
