@@ -92,7 +92,7 @@ class BSManageData():
             if(os.path.isfile(fullPathToFile)):
                 return fullPathToFile
             else:
-                self.Print(0, 'Error', '  GetReadPath: No case matching this data.')
+                self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
                 return None
 
         def GetWritePath(self):
@@ -139,7 +139,7 @@ class BSManageData():
             if fullPathToFile != '':
                 return fullPathToFile
             else:
-                self.Print(0, 'Error', '  GetWritePath: No case matching this data.')
+                self.Print(0, 'Error', '  GetWritePath: No case matching this data', fullPathToFile)
                 return None
 
         def GetData(self):
@@ -153,7 +153,7 @@ class BSManageData():
                 if self.basePathMJDSIM in fullPathToFile:
                     return self.bspr.GetBinnedData(inFile = fullPathToFile, **cvDict)
                 if self.basePathOutput in fullPathToFile:
-                    self.Print(3, 'Debug', '  Working with: np.sum() =', np.sum(np.load(fullPathToFile))) #  debug
+                    self.Print(3, 'Debug', '  Pulling data from .npy file: np.sum() =', np.sum(np.load(fullPathToFile))) #  debug
                     return np.load(fullPathToFile)
             else:
                 return None

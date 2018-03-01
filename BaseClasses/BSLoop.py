@@ -58,9 +58,10 @@ class BSLoop():
         Notes on current implementation:
         -You only pull .npy or .root data if you don’t recur (that is, if you’re at the top of the LIFO recursion stack). Otherwise, data gets returned up into your loop.
         -You only save if you pull non-null data (not desired: current implementation resaves .npy data that get pulled)
-        -You only return data to the next loop up if the MOST RECENT pulled data is not None. This could be more robust
+        -Combined data is returned to the next loop up if weightFunc is set, even if combinedData is zeros. #-You only return data to the next loop up if the MOST RECENT pulled data is not None. This could be more robust
         -You only combine data if the pulled data is not None and the weightFunc is set
         -By pull, I mean bsmd.GetData()
+        -If data is None (i.e. DNE), then the loop just passes by without doing any operations
         """
         if recur:
             r_objType = recur['r_objType']
@@ -86,7 +87,7 @@ class BSLoop():
         bscv.ResetCurrentVar(objType) # erase the current var for this objType since we are exiting the level of recursion owned by this objType.
         if objType == 'segment': # could remove this special case if branchingRatio was treated as its own loop
             bscv.ResetCurrentVar('branchingRatio')
-        if weightFunc != None and (data is not None):
+        if weightFunc != None: #and (data is not None):
             return bscDict[objType].GetCombinedData() # return the weight-combined histogram
 
         return None # return None if not doing any combining at this level (i.e. no data or weightFunc)
