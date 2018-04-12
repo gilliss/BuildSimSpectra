@@ -91,6 +91,9 @@ class BSConfigData():
     def GetActiveDetectorDict(self):
         return cfgd.activeDetectorDict
     def GetDetectorList(self):
+        """
+        Get list of all detector simulation names (Ge_C_P_D)
+        """
         return cfgd.detectorList
     def GetDetectorMassList(self):
         return cfgd.detectorMassList
