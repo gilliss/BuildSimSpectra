@@ -65,7 +65,13 @@ class BSCombine():
             elif weightFunc == 'BranchingRatio':
                 return self.branchingRatio # (unitless, decays / decays)
             elif weightFunc == 'TotalMass':
-                tMass = np.sum(self.bscd.GetActiveDetectorMassList())
+                # The following line needs to use an ActiveDetectorMassList that only includes the detectors in self.bscd.macroDetectorSNList
+                ## tMass = np.sum(self.bscd.GetActiveDetectorMassList())
+                tMass = 0.
+                for dStr_tmp in self.bscd.GetMacroData('detector'):
+                    dIndex_tmp = self.bscd.GetActiveDetectorSNList().index(dStr_tmp)
+                    dMass_tmp = self.bscd.GetActiveDetectorMassList()[dIndex_tmp]
+                    tMass += dMass_tmp
                 return 1/tMass # (1 / kg)
             elif weightFunc == 'ActivityPerDetectorMass':
                 dCActStr = self.bscv.GetCurrentVar('decayChain') + 'Activity'
@@ -80,7 +86,13 @@ class BSCombine():
                 dStr = self.bscv.GetCurrentVar('detector')
                 dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # will raise exception if dStr not in list # dIndex = self.bscd.GetDetectorList().index(dStr)
                 dMass = self.bscd.GetActiveDetectorMassList()[dIndex] # dMass = self.bscd.GetDetectorMassList()[dIndex]
-                tMass = np.sum(self.bscd.GetActiveDetectorMassList())
+                # The following line needs to use an ActiveDetectorMassList that only includes the detectors in self.bscd.macroDetectorSNList
+                ## tMass = np.sum(self.bscd.GetActiveDetectorMassList())
+                tMass = 0.
+                for dStr_tmp in self.bscd.GetMacroData('detector'):
+                    dIndex_tmp = self.bscd.GetActiveDetectorSNList().index(dStr_tmp)
+                    dMass_tmp = self.bscd.GetActiveDetectorMassList()[dIndex_tmp]
+                    tMass += dMass_tmp
                 return dMass/tMass # (unitless, kg / kg)
             else:
                 self.Print(0, 'Error', '  GetWeight: weightFunc not recognized')
