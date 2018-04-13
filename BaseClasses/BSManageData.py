@@ -58,37 +58,37 @@ class BSManageData():
 
             self.Print(3, 'Debug', '  cVs:', self.cut, self.configuration, self.detector, self.decayChain, self.segment, self.branchingRatio, self.hardwareComponent, self.hardwareGroup)
 
-            # base files: basePathMJDSIM (mjdsim: hardwareComponent_segment_detector.root, e.g. DUCopper_A210_Z81_1010102)
+            # l0: base files: basePathMJDSIM (mjdsim: hardwareComponent_segment_detector.root, e.g. DUCopper_A210_Z81_1010102)
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathMJDSIM + self.configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
                 fileName = '%s_%s_%s.root' % (self.hardwareComponent, self.segment, self.detector)
                 fullPathToFile = pathToFile + fileName
 
-            # base files: basePathOutput hardwareComponent_segment_detector_cut.npy (mjdsim: hardwareComponent_segment_detector.root)
+            # l0: base files: basePathOutput hardwareComponent_segment_detector_cut.npy (mjdsim: hardwareComponent_segment_detector.root)
             # if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
             #     pathToFile = self.basePathOutput + '/' + str(self.configuration) + '/' + ('cut%d' % self.cut) + '/' + 'l0' + '/'
             #     fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.segment, self.detector, str(self.cut))
             #     fullPathToFile = pathToFile + fileName
 
-            # hardwareComponent_detector_decayChain_cut_configuration.npy (mjdsim: hardwareComponent_detector_decayChainCombined.root)
+            # l1: hardwareComponent_detector_decayChain_cut_configuration.npy (mjdsim: hardwareComponent_detector_decayChainCombined.root)
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathOutput + '/' + str(self.configuration) + '/' + ('cut%d' % self.cut) + '/' + 'l1' + '/'
                 fileName = '%s_%s_%s_%s_%s.npy' % (self.hardwareComponent, self.detector, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
-            # hardwareComponent_decayChain_cut_configuration (mjdsim: hardwareComponent_MJD_decayChainCombined)
+            # l2: hardwareComponent_decayChain_cut_configuration (mjdsim: hardwareComponent_MJD_decayChainCombined)
             if self.cut and self.configuration and (not self.detector) and self.decayChain and (not self.segment) and (not self.branchingRatio) and self.hardwareComponent and (not self.hardwareGroup):
                 pathToFile = self.basePathOutput + '/' + str(self.configuration) + '/' + ('cut%d' % self.cut) + '/' + 'l2' + '/'
                 fileName = '%s_%s_%s_%s.npy' % (self.hardwareComponent, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
-            # detector_decayChain_cut_configuration (mjdsim: detector_decayChainCombined)
+            # l3: detector_decayChain_cut_configuration (mjdsim: detector_decayChainCombined)
             if self.cut and self.configuration and self.detector and self.decayChain and (not self.segment) and (not self.branchingRatio) and (not self.hardwareComponent) and (not self.hardwareGroup):
                 pathToFile = self.basePathOutput + '/' + str(self.configuration) + '/' + ('cut%d' % self.cut) + '/' + 'l3' + '/'
                 fileName = '%s_%s_%s_%s.npy' % (self.detector, self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
 
-            # decayChain_cut_configuration (mjdsim: MJD_decayChainCombined)
+            # l4: decayChain_cut_configuration (mjdsim: MJD_decayChainCombined)
             if self.cut and self.configuration and (not self.detector) and self.decayChain and (not self.segment) and (not self.branchingRatio) and (not self.hardwareComponent) and (not self.hardwareGroup):
                 pathToFile = self.basePathOutput + '/' + str(self.configuration) + '/' + ('cut%d' % self.cut) + '/' + 'l4' + '/'
                 fileName = '%s_%s_%s.npy' % (self.decayChain, str(self.cut), self.configuration)
