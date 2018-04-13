@@ -135,6 +135,13 @@ class BSConfigData():
         Returns a two-level dict mapping from decayChains to their segments, and then from segments to their branchingRatio.
         """
         return cfgd.decayChainSegmentBranchingRatioDict
+    def GetSegmentList(self):
+        segmentList = []
+        for dC in self.GetDecayChainList():
+            for segment in self.GetDecayChainSegmentBranchingRatioDict()[dC]:
+                segmentList.append(segment)
+        segmentList = list(set(segmentList)) # remove duplicates, e.g. A222_Z86
+        return segmentList
 
     ###############################
     ### Hardware Components and Assay
@@ -149,6 +156,11 @@ class BSConfigData():
         Get the dict of hardwareComponents and their corresponding materials, masses, activations, activities
         """
         return cfgd.hardwareComponentDict
+    def GetAssayDict(self):
+        """
+        Get the dict of hardwareGroups and their corresponding assay values
+        """
+        return cfgd.assayDict
     def GetHardwareComponentList(self):
         """
         Simple list of hardwareComponents to loop over
@@ -157,6 +169,14 @@ class BSConfigData():
         for obj in self.GetHardwareComponentDict():
             hardwareComponentList.append(obj)
         return hardwareComponentList
+    def GetHardwareGroupList(self):
+        """
+        Simple list of hardwareGroups to loop over
+        """
+        hardwareGroupList = []
+        for obj in self.GetAssayDict():
+            hardwareGroupList.append(obj)
+        return hardwareGroupList
 
 if __name__ == '__main__':
     BSConfigData()
