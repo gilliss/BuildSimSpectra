@@ -125,6 +125,17 @@ class BSConfigData():
                 activeDetectorMassList.append(self.GetDetectorMassList()[i])
         return activeDetectorMassList
 
+    def GetActiveEnrichedDetectorSNList(self):
+        """
+        Use GetActiveDetectorDict() and cfgd.enrichedDetectorList to construct a list of active enriched detectors
+        """
+        self.UpdateSelfCurrentVars()
+        activeEnrichedDetectorSNList = []
+        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
+            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1 and cfgd.enrichedDetectorList[i] == 1:
+                activeEnrichedDetectorSNList.append(cfgd.detectorList[i])
+        return activeEnrichedDetectorSNList
+
     ###############################
     ### Decay Chains, Segments, Branching Ratios
     ###############################

@@ -46,6 +46,19 @@ class BSLoop():
 
     def GetBSCDList(self, objType):
         """
+        Return the list or dict of objs of this objType directly from BSConfigData
+        """
+        if(objType == 'activeDetectorSNList'):
+            return bscd.GetActiveDetectorSNList()
+        if(objType == 'activeEnrichedDetectorSNList'):
+            return bscd.GetActiveEnrichedDetectorSNList()
+        if(objType == 'hardwareComponentList'):
+            return bscd.GetHardwareComponentList()
+        if(objType == 'decayChainList'):
+            return bscd.GetDecayChainList()
+
+    def GetMacroList(self, objType):
+        """
         Return the list or dict of objs of this objType. To be looped over in the For() routine.
         """
         if(objType == 'segment'):
@@ -77,10 +90,10 @@ class BSLoop():
 
         # THIS IS THE MAIN RECURSIVE LOOP. IT LOOPS, PULLS DATA, SAVES DATA, COMBINES DATA, RETURNS DATA
         bscDict[objType] = BSCombine.BSCombine(weightFunc, bscv, bscd) # BSCombine instantiation for each loop
-        for obj in self.GetBSCDList(objType): # loop over the objs of this objType
+        for obj in self.GetMacroList(objType): # loop over the objs of this objType
             bscv.SetCurrentVar(objType, obj) # set the current var for this objType. Informs the paths to files, the data pulled for weighting functions, etc.
             if objType == 'segment': # could remove this special case if branchingRatio was treated as its own loop
-                bscv.SetCurrentVar('branchingRatio', self.GetBSCDList(objType)[obj])
+                bscv.SetCurrentVar('branchingRatio', self.GetMacroList(objType)[obj])
             self.Print(1, objType, bscv.GetCurrentVar(objType))
             if recur:
                 data = self.For(objType = r_objType, weightFunc = r_weightFunc , **r_recur) # enter deeper level of recursion and return the results back up into this loop
