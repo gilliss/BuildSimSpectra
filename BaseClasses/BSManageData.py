@@ -26,8 +26,8 @@ class BSManageData():
             self.hardwareComponent = None
             self.hardwareGroup = None
 
-            self.basePathMJDSIM = '/global/projecta/projectdirs/majorana/sim/MJDG41003GAT/Spectra/'
-            self.basePathOutput = '/global/homes/g/gilliss/BuildSpectra_Output/'
+            self.basePathMJDSIM = '/global/projecta/projectdirs/majorana/sim/MJDG41003GAT/Spectra'
+            self.basePathOutput = '/global/homes/g/gilliss/BuildSpectra_Output'
 
             return None
 
@@ -60,7 +60,10 @@ class BSManageData():
 
             # l0: base files: basePathMJDSIM (mjdsim: hardwareComponent_segment_detector.root, e.g. DUCopper_A210_Z81_1010102)
             if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
-                pathToFile = self.basePathMJDSIM + self.configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
+                tmp_configuration = self.configuration
+                if self.configuration == 'DS6':
+                    tmp_configuration = 'All'
+                pathToFile = self.basePathMJDSIM + '/' + tmp_configuration + '/bulk/' + self.hardwareComponent + '/' + self.segment + '/'
                 fileName = '%s_%s_%s.root' % (self.hardwareComponent, self.segment, self.detector)
                 fullPathToFile = pathToFile + fileName
 
