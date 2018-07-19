@@ -26,7 +26,7 @@ class BSManageData():
             self.hardwareComponent = None
             self.hardwareGroup = None
 
-            self.basePathMJDSIM = '/global/projecta/projectdirs/majorana/sim/MJDG41003GAT/Spectra'
+            self.basePathMJDSIM = '/global/projecta/projectdirs/majorana/sim/MJDG41004GAT/Spectra'
             self.basePathOutput = '/global/homes/g/gilliss/BuildSpectra_Output'
 
             return None
