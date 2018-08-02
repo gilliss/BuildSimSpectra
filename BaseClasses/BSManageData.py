@@ -103,6 +103,10 @@ class BSManageData():
             else:
                 if ('Ge' not in fileName) and ('_Z0_' in fullPathToFile): # avoid printing expected missing files
                     return None
+                if ('Ge' in fileName) and ('_2v_' in fileName): # avoid printing expected missing files
+                    self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
+                    self.Print(0, '  Warning', '  GetReadPath: Is this b/c processing only detectors of one enrichment type?')
+                    return None
                 else:
                     self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
                     return None
