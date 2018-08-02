@@ -136,6 +136,17 @@ class BSConfigData():
                 activeEnrichedDetectorSNList.append(cfgd.detectorList[i])
         return activeEnrichedDetectorSNList
 
+    def GetActiveNaturalDetectorSNList(self):
+        """
+        Use GetActiveDetectorDict() and cfgd.enrichedDetectorList to construct a list of active natural detectors
+        """
+        self.UpdateSelfCurrentVars()
+        activeNaturalDetectorSNList = []
+        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
+            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1 and cfgd.enrichedDetectorList[i] == 0:
+                activeNaturalDetectorSNList.append(cfgd.detectorList[i])
+        return activeNaturalDetectorSNList
+
     ###############################
     ### Decay Chains, Segments, Branching Ratios
     ###############################
