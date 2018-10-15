@@ -66,7 +66,6 @@ class BSCombine():
                 return self.branchingRatio # (unitless, decays / decays)
             elif weightFunc == 'TotalMass':
                 # The following line needs to use an ActiveDetectorMassList that only includes the detectors in self.bscd.macroDetectorSNList
-                ## tMass = np.sum(self.bscd.GetActiveDetectorMassList())
                 tMass = 0.
                 for dStr_tmp in self.bscd.GetMacroData('detector'):
                     dIndex_tmp = self.bscd.GetActiveDetectorSNList().index(dStr_tmp)
@@ -76,18 +75,17 @@ class BSCombine():
             elif weightFunc == 'ActivityPerDetectorMass':
                 dCActStr = self.bscv.GetCurrentVar('decayChain') + 'Activity'
                 hwCStr = self.bscv.GetCurrentVar('hardwareComponent')
+                activity_hwC_dC = self.bscd.GetHardwareComponentDict()[hwCStr][dCActStr][0]
+                secs_per_year = self.bscd.GetSecsPerYear()
                 dStr = self.bscv.GetCurrentVar('detector')
                 dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # will raise exception if dStr not in list # dIndex = self.bscd.GetDetectorList().index(dStr)
                 dMass = self.bscd.GetActiveDetectorMassList()[dIndex] # dMass = self.bscd.GetDetectorMassList()[dIndex]
-                activity_hwC_dC = self.bscd.GetHardwareComponentDict()[hwCStr][dCActStr][0]
-                secs_per_year = self.bscd.GetSecsPerYear()
                 return (activity_hwC_dC * secs_per_year)/dMass # (Bq * (sec/yr) / kg) # Bq is the rate in the total mass of this material.
             elif weightFunc == 'DetectorMassPerTotalMass':
                 dStr = self.bscv.GetCurrentVar('detector')
                 dIndex = self.bscd.GetActiveDetectorSNList().index(dStr) # will raise exception if dStr not in list # dIndex = self.bscd.GetDetectorList().index(dStr)
                 dMass = self.bscd.GetActiveDetectorMassList()[dIndex] # dMass = self.bscd.GetDetectorMassList()[dIndex]
                 # The following line needs to use an ActiveDetectorMassList that only includes the detectors in self.bscd.macroDetectorSNList
-                ## tMass = np.sum(self.bscd.GetActiveDetectorMassList())
                 tMass = 0.
                 for dStr_tmp in self.bscd.GetMacroData('detector'):
                     dIndex_tmp = self.bscd.GetActiveDetectorSNList().index(dStr_tmp)

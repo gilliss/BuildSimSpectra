@@ -77,7 +77,7 @@ class BSLoop():
         Notes on current implementation:
         -You only pull .npy or .root data if you don’t recur (that is, if you’re at the top of the LIFO recursion stack). Otherwise, data gets returned up into your loop.
         -You only save if you pull non-null data (not desired: current implementation resaves .npy data that get pulled)
-        -Combined data is returned to the next loop up if weightFunc is set, even if combinedData is zeros. #-You only return data to the next loop up if the MOST RECENT pulled data is not None. This could be more robust
+        -Combined data is returned to the next loop up if weightFunc is set, even if combinedData is zeros
         -You only combine data if the pulled data is not None and the weightFunc is set
         -By pull, I mean bsmd.GetData()
         -If data is None (i.e. DNE), then the loop just passes by without doing any operations

@@ -86,10 +86,6 @@ class BSConfigData():
     ###############################
     ### Detectors
     ###############################
-    def GetConfigurationList(self):
-        return cfgd.configurationList
-    def GetActiveDetectorDict(self):
-        return cfgd.activeDetectorDict
     def GetDetectorList(self):
         """
         Get list of all detector simulation names (Ge_C_P_D), regardless of config
@@ -130,6 +126,11 @@ class BSConfigData():
             if self.GetEnrichedDetectorList()[i] == 0:
                 naturalDetectorSNList.append(self.GetDetectorList()[i])
         return naturalDetectorSNList
+
+    def GetConfigurationList(self):
+        return cfgd.configurationList
+    def GetActiveDetectorDict(self):
+        return cfgd.activeDetectorDict
 
     def GetActiveDetectorSNList(self):
         """
