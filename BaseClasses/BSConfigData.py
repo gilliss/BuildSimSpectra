@@ -96,7 +96,15 @@ class BSConfigData():
         """
         return cfgd.detectorList
     def GetDetectorMassList(self):
+        """
+        Modeled mass
+        """
         return cfgd.detectorMassList
+    def GetDetectorPhysMassList(self):
+        """
+        Physical/measured mass
+        """
+        return cfgd.detectorPhysMassList
     def GetEnrichedDetectorList(self):
         return cfgd.enrichedDetectorList
 
@@ -112,6 +120,7 @@ class BSConfigData():
             if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
                 activeDetectorSNList.append(self.GetDetectorList()[i])
         return activeDetectorSNList
+        
     def GetActiveDetectorMassList(self):
         """
         Use the current configuration's activeDetectorDict to make a list of only the active detectors' masses.
