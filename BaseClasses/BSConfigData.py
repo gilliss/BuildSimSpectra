@@ -92,50 +92,27 @@ class BSConfigData():
         return cfgd.activeDetectorDict
     def GetDetectorList(self):
         """
-        Get list of all detector simulation names (Ge_C_P_D)
+        Get list of all detector simulation names (Ge_C_P_D), regardless of config
         """
         return cfgd.detectorList
     def GetDetectorMassList(self):
         """
-        Modeled mass
+        Get list of all modeled masses, regardless of config
         """
         return cfgd.detectorMassList
     def GetDetectorPhysMassList(self):
         """
-        Physical/measured mass
+        Get list of all physical/measured masses, regardless of config
         """
         return cfgd.detectorPhysMassList
     def GetEnrichedDetectorList(self):
+        """
+        Get list of all detectors' enrichment types (0::Nat,1::Enr), regardless of config
+        """
         return cfgd.enrichedDetectorList
-
-    def GetActiveDetectorSNList(self):
-        """
-        Use the current configuration's full activeDetectorDict to make a list of only the active detector serial numbers (SNs).
-        The returned activeDetectorSNList does not need to correspond 1-to-1 with the (potentially custom) macroDetectorSNList.
-        This is because only the macroDetectorSNList will be looped over in BSLoop.py and the SNs/masses of those detectors will be found in the activeDetectorSNList in BSCombine.py::GetWeight().
-        """
-        self.UpdateSelfCurrentVars()
-        activeDetectorSNList = []
-        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
-            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
-                activeDetectorSNList.append(self.GetDetectorList()[i])
-        return activeDetectorSNList
-        
-    def GetActiveDetectorMassList(self):
-        """
-        Use the current configuration's activeDetectorDict to make a list of only the active detectors' masses.
-        The returned activeDetectorMassList does not need to correspond 1-to-1 with the (potentially custom) macroDetectorSNList.
-        This is because only the macroDetectorSNList will be looped over in BSLoop.py and the SNs/masses of those detectors will be found in the activeDetectorSNList in BSCombine.py::GetWeight().
-        """
-        self.UpdateSelfCurrentVars()
-        activeDetectorMassList = []
-        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
-            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
-                activeDetectorMassList.append(self.GetDetectorMassList()[i])
-        return activeDetectorMassList
-
     def GetEnrichedDetectorSNList(self):
         """
+        Get list of all enr detector simulation names (Ge_C_P_D), regardless of config
         """
         self.UpdateSelfCurrentVars()
         enrichedDetectorSNList = []
@@ -143,9 +120,9 @@ class BSConfigData():
             if self.GetEnrichedDetectorList()[i] == 1:
                 enrichedDetectorSNList.append(self.GetDetectorList()[i])
         return enrichedDetectorSNList
-
     def GetNaturalDetectorSNList(self):
         """
+        Get list of all nat detector simulation names (Ge_C_P_D), regardless of config
         """
         self.UpdateSelfCurrentVars()
         naturalDetectorSNList = []
@@ -154,9 +131,23 @@ class BSConfigData():
                 naturalDetectorSNList.append(self.GetDetectorList()[i])
         return naturalDetectorSNList
 
+    def GetActiveDetectorSNList(self):
+        """
+        Use the current configuration's activeDetectorDict to make a list of only the active detector serial numbers (SNs).
+        The returned activeDetectorSNList does not need to correspond 1-to-1 with the (potentially custom) macroDetectorSNList.
+        This is because only the macroDetectorSNList will be looped over in BSLoop.py and the SNs/masses of those
+        detectors will be found in the activeDetectorSNList in BSCombine.py::GetWeight().
+        """
+        self.UpdateSelfCurrentVars()
+        activeDetectorSNList = []
+        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
+            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
+                activeDetectorSNList.append(self.GetDetectorList()[i])
+        return activeDetectorSNList
     def GetActiveEnrichedDetectorSNList(self):
         """
-        Use GetActiveDetectorDict() and cfgd.enrichedDetectorList to construct a list of active enriched detectors
+        Use the current configuration's activeDetectorDict and cfgd.enrichedDetectorList to construct a list of
+        active enriched detectors
         """
         self.UpdateSelfCurrentVars()
         activeEnrichedDetectorSNList = []
@@ -164,10 +155,10 @@ class BSConfigData():
             if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1 and cfgd.enrichedDetectorList[i] == 1:
                 activeEnrichedDetectorSNList.append(cfgd.detectorList[i])
         return activeEnrichedDetectorSNList
-
     def GetActiveNaturalDetectorSNList(self):
         """
-        Use GetActiveDetectorDict() and cfgd.enrichedDetectorList to construct a list of active natural detectors
+        Use the current configuration's activeDetectorDict and cfgd.enrichedDetectorList to construct a list of
+        active natural detectors
         """
         self.UpdateSelfCurrentVars()
         activeNaturalDetectorSNList = []
@@ -175,6 +166,41 @@ class BSConfigData():
             if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1 and cfgd.enrichedDetectorList[i] == 0:
                 activeNaturalDetectorSNList.append(cfgd.detectorList[i])
         return activeNaturalDetectorSNList
+    def GetActiveDetectorMassList(self):
+        """
+        Use the current configuration's activeDetectorDict to make a list of only the active detectors' masses.
+        The returned activeDetectorMassList does not need to correspond 1-to-1 with the (potentially custom) macroDetectorSNList.
+        This is because only the macroDetectorSNList will be looped over in BSLoop.py and the SNs/masses of those
+        detectors will be found in the activeDetectorSNList in BSCombine.py::GetWeight().
+        """
+        self.UpdateSelfCurrentVars()
+        activeDetectorMassList = []
+        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
+            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1:
+                activeDetectorMassList.append(self.GetDetectorMassList()[i]) # GetDetectorPhysMassList
+        return activeDetectorMassList
+    def GetActiveEnrichedDetectorMassList(self):
+        """
+        Use the current configuration's activeDetectorDict and cfgd.enrichedDetectorList to make a list
+        of only the active enriched detectors' masses.
+        """
+        self.UpdateSelfCurrentVars()
+        activeEnrichedDetectorMassList = []
+        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
+            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1 and cfgd.enrichedDetectorList[i] == 1:
+                activeEnrichedDetectorMassList.append(self.GetDetectorMassList()[i]) # GetDetectorPhysMassList
+        return activeEnrichedDetectorMassList
+    def GetActiveNaturalDetectorMassList(self):
+        """
+        Use the current configuration's activeDetectorDict and cfgd.enrichedDetectorList to make a list
+        of only the active natural detectors' masses.
+        """
+        self.UpdateSelfCurrentVars()
+        activeNaturalDetectorMassList = []
+        for i in range(len(self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')])):
+            if self.GetActiveDetectorDict()[self.bscv.GetCurrentVar('configuration')][i] == 1 and cfgd.enrichedDetectorList[i] == 0:
+                activeNaturalDetectorMassList.append(self.GetDetectorMassList()[i]) # GetDetectorPhysMassList
+        return activeNaturalDetectorMassList
 
     ###############################
     ### Decay Chains, Segments, Branching Ratios
