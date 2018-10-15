@@ -125,6 +125,26 @@ class BSConfigData():
                 activeDetectorMassList.append(self.GetDetectorMassList()[i])
         return activeDetectorMassList
 
+    def GetEnrichedDetectorSNList(self):
+        """
+        """
+        self.UpdateSelfCurrentVars()
+        enrichedDetectorSNList = []
+        for i in range(len(self.GetDetectorList())):
+            if self.GetEnrichedDetectorList()[i] == 1:
+                enrichedDetectorSNList.append(self.GetDetectorList()[i])
+        return enrichedDetectorSNList
+
+    def GetNaturalDetectorSNList(self):
+        """
+        """
+        self.UpdateSelfCurrentVars()
+        naturalDetectorSNList = []
+        for i in range(len(self.GetDetectorList())):
+            if self.GetEnrichedDetectorList()[i] == 0:
+                naturalDetectorSNList.append(self.GetDetectorList()[i])
+        return naturalDetectorSNList
+
     def GetActiveEnrichedDetectorSNList(self):
         """
         Use GetActiveDetectorDict() and cfgd.enrichedDetectorList to construct a list of active enriched detectors
