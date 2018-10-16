@@ -14,8 +14,9 @@ class BSManageData():
         Class to find data from directory structures within mjdsim/ and elsewhere on PDSF
         Methods to retrieve that data and return it as a useable object to be saved or combined.
         """
-        def __init__(self, BSCurrentVarsObject):
-            self.bscv = BSCurrentVarsObject # bscv object is fed in as a data member. Fed from BSLoop.py
+        def __init__(self, BSConfigDataObject):
+            self.bscd = BSConfigDataObject # bscd object is fed in as a data member. Fed from BSLoop.py
+            self.bscv = self.bscd.bscv # bscv object is same as that owned by bscd. Fed from BSLoop.py
             self.bspr = BSPyROOT.BSPyROOT(self.bscv) # note bscv object is passed in
             self.cut = None
             self.configuration = None
@@ -106,6 +107,8 @@ class BSManageData():
                 if ('Ge' in fileName) and ('_2v_' in fileName): # avoid printing expected missing files
                     # self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
                     # self.Print(0, '  Warning', '  GetReadPath: Is this b/c processing only detectors of one enrichment type?')
+                    return None
+                if ('Ge' in fileName) and (self.hardwareComponent not in self.bscd.macroHardwareComponentList): # avoid printing expected missing files
                     return None
                 else:
                     self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)

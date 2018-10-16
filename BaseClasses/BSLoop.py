@@ -11,7 +11,7 @@ import BaseClasses.BSConfigData as BSConfigData
 bscd = BSConfigData.BSConfigData(bscv) # note bscv object is passed in
 
 import BaseClasses.BSManageData as BSManageData
-bsmd = BSManageData.BSManageData(bscv) # note bscv object is passed in
+bsmd = BSManageData.BSManageData(bscd) # note bscd object (which holds a bscv object) is passed in
 
 import BaseClasses.BSCombine as BSCombine
 bscDict = {} # BSCombine instances are instantiated and added into this dict in the For() method
