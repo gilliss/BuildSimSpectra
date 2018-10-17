@@ -203,6 +203,34 @@ class BSConfigData():
                 activeNaturalDetectorMassList.append(self.GetDetectorMassList()[i]) # GetDetectorPhysMassList
         return activeNaturalDetectorMassList
 
+    def GetDetectorEnrichment(self, dStr = None):
+        """
+        Given a detector simulation name (Ge_C_P_D), return the enrichment type
+        [0::Nat, 1::Enr]
+        """
+        if dStr == None:
+            dStr = self.bscv.GetCurrentVar('detector')
+        dIndex = self.GetDetectorList().index(dStr) # will raise exception if dStr not in list # dIndex = self.bscd.GetDetectorList().index(dStr)
+        return self.GetEnrichedDetectorList()[dIndex]
+    def GetDetectorMass(self, dStr = None):
+        """
+        Given a detector simulation name (Ge_C_P_D), return the mass (simulated, modeled mass)
+        [0::Nat, 1::Enr]
+        """
+        if dStr == None:
+            dStr = self.bscv.GetCurrentVar('detector')
+        dIndex = self.GetDetectorList().index(dStr) # will raise exception if dStr not in list # dIndex = self.bscd.GetDetectorList().index(dStr)
+        return self.GetDetectorMassList()[dIndex]
+    def GetDetectorPhysMass(self, dStr = None):
+        """
+        Given a detector simulation name (Ge_C_P_D), return the physmass (measured, physical mass)
+        [0::Nat, 1::Enr]
+        """
+        if dStr == None:
+            dStr = self.bscv.GetCurrentVar('detector')
+        dIndex = self.GetDetectorList().index(dStr) # will raise exception if dStr not in list # dIndex = self.bscd.GetDetectorList().index(dStr)
+        return self.GetDetectorPhysMassList()[dIndex]
+
     ###############################
     ### Decay Chains, Segments, Branching Ratios
     ###############################

@@ -102,13 +102,14 @@ class BSManageData():
             if(os.path.isfile(fullPathToFile)):
                 return fullPathToFile
             else:
-                if ('Ge' not in fileName) and ('_Z0_' in fullPathToFile): # avoid printing expected missing files
+                # avoid printing expected missing files
+                if ('Ge' not in fileName) and ('_Z0_' in fullPathToFile):
                     return None
-                if ('Ge' in fileName) and ('_2v_' in fileName): # avoid printing expected missing files
-                    # self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
-                    # self.Print(0, '  Warning', '  GetReadPath: Is this b/c processing only detectors of one enrichment type?')
+                if (('NatGe' in fileName) and (self.bscd.GetDetectorEnrichment(self.detector) == 1)) or (('EnrGe' in fileName) and (self.bscd.GetDetectorEnrichment(self.detector) == 0)):
                     return None
-                if ('Ge' in fileName) and (self.hardwareComponent not in self.bscd.macroHardwareComponentList): # avoid printing expected missing files
+                # if ('Ge' in fileName) and ('_2v_' in fileName):
+                #     return None
+                if ('Ge' in fileName) and (self.hardwareComponent not in self.bscd.macroHardwareComponentList):
                     return None
                 else:
                     self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
