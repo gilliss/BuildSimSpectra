@@ -49,7 +49,7 @@ class BSManageData():
 
             self.verbosity = cvDict['verbosity']
 
-        def GetReadPath(self):
+        def GetReadPath(self): # enrichment_type = None
             """
             Get the full path to a file. Many variants based on what weightFuncs are on or off or what level of loop you're in
             """
@@ -97,6 +97,13 @@ class BSManageData():
                 pathToFile = self.basePathOutput + '/' + str(self.configuration) + '/' + ('cut%d' % self.cut) + '/' + 'l4' + '/'
                 fileName = '%s_%s_%s.npy' % (self.decayChain, str(self.cut), self.configuration)
                 fullPathToFile = pathToFile + fileName
+
+            # Check if enrichment_type is specified. If it is, change path to include All/,Nat/, or Enr/
+            # This should just apply to levels 2 and 4
+            # if enrichment_type != None:
+            #     file_base_name = os.path.basename(fullPathToFile)
+            #     file_dir_name = os.path.dirname(fullPathToFile)
+            #     fullPathToFile = file_dir_name + '/' + enrichment_type + '/' + file_base_name
 
             # RETURN
             if(os.path.isfile(fullPathToFile)):
@@ -162,12 +169,12 @@ class BSManageData():
                 self.Print(0, 'Error', '  GetWritePath: No case matching this data', fullPathToFile)
                 return None
 
-        def GetData(self):
+        def GetData(self): # enrichment_type = None
             """
             Get the file and return an object that is useable
             """
 
-            fullPathToFile = self.GetReadPath()
+            fullPathToFile = self.GetReadPath() # enrichment_type = enrichment_type
             if fullPathToFile != None:
                 cvDict = self.bscv.GetCurrentVarsDict()
                 if self.basePathMJDSIM in fullPathToFile:
