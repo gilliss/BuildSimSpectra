@@ -100,7 +100,6 @@ class BSManageData():
 
             # RETURN
             if(os.path.isfile(fullPathToFile)):
-                self.Print(0, 'fullPathToFile', fullPathToFile)
                 return fullPathToFile
             else:
                 # avoid printing expected missing files
