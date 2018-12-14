@@ -112,12 +112,12 @@ class BSManageData():
                 # avoid printing expected missing files
                 if ('Ge' not in fileName) and ('_Z0_' in fullPathToFile):
                     return None
-                if (('NatGe' in fileName) and (self.bscd.GetDetectorEnrichment(self.detector) == 1)) or (('EnrGe' in fileName) and (self.bscd.GetDetectorEnrichment(self.detector) == 0)):
-                    return None
-                # if ('Ge' in fileName) and ('_2v_' in fileName):
+                # if (('NatGe' in fileName) and (self.bscd.GetDetectorEnrichment(self.detector) == 1)) or (('EnrGe' in fileName) and (self.bscd.GetDetectorEnrichment(self.detector) == 0)):
                 #     return None
-                if ('Ge' in fileName) and (self.hardwareComponent not in self.bscd.macroHardwareComponentList):
-                    return None
+                # # if ('Ge' in fileName) and ('_2v_' in fileName):
+                # #    return None
+                # if ('Ge' in fileName) and (self.hardwareComponent not in self.bscd.macroHardwareComponentList):
+                #     return None
                 else:
                     self.Print(0, 'Error', '  GetReadPath: No case matching this data', fullPathToFile)
                     return None
