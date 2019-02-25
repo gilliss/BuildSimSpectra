@@ -68,7 +68,7 @@ class BSManageData():
                 fileName = '%s_%s_%s.root' % (self.hardwareComponent, self.segment, self.detector)
                 fullPathToFile = pathToFile + fileName
 
-            # l0: base files: basePathOutput hardwareComponent_segment_detector_cut.npy (mjdsim: hardwareComponent_segment_detector.root)
+            # # l0: base files: basePathOutput hardwareComponent_segment_detector_cut.npy (mjdsim: hardwareComponent_segment_detector.root)
             # if self.cut and self.configuration and self.detector and self.decayChain and self.segment and self.branchingRatio and self.hardwareComponent and (not self.hardwareGroup):
             #     pathToFile = self.basePathOutput + '/' + str(self.configuration) + '/' + ('cut%d' % self.cut) + '/' + 'l0' + '/'
             #     fileName = '%s_%s_%s_%s' % (self.hardwareComponent, self.segment, self.detector, str(self.cut))
